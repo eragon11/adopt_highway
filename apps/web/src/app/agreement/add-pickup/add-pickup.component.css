@@ -1,0 +1,129 @@
+.pickup-form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  padding-top: 50px;
+  max-width: 800px;
+}
+
+.mat-card-header {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+}
+
+.required-hint {
+  color: hsl(214, 58%, 47%);
+}
+
+.pickup-field {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+}
+
+.empty-field {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  height: 63px;
+  width: 202px;
+}
+
+h2 {
+  padding-left: 30px;
+  width: 90%;
+}
+
+h1 {
+  color: hsl(214, 58%, 47%);
+}
+
+.mat-dialog-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.mat-input-element:disabled {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+mat-form-field {
+  width: 300px;
+}
+
+mat-form-field label {
+  font-size: 20px;
+}
+
+mat-form-field.mat-form-field-should-float label {
+  font-size: 13px;
+}
+
+.success-snackbar {
+  white-space: pre-wrap;
+  margin-top: 200px !important;
+  background-color: aliceblue;
+}
+
+::ng-deep .mat-dialog-actions {
+  justify-content: space-evenly !important;
+}
+
+/* //input outline color */
+::ng-deep
+  .pickup-required
+  > .mat-form-field-appearance-outline
+  .mat-form-field-outline {
+  color: hsl(0, 100%, 50%) !important;
+}
+
+/* mat-icon-stepper selected color change */
+::ng-deep .mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done,
+.mat-step-header .mat-step-icon-state-edit {
+  background-color: hsl(214, 58%, 47%) !important;
+}
+
+/* //input outline color */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: hsl(214, 58%, 47%);
+}
+
+/* //mat-input focused color */
+::ng-deep
+  .mat-form-field-appearance-outline.mat-focused
+  .mat-form-field-outline-thick {
+  color: hsl(214, 58%, 47%) !important;
+}
+
+/* // mat-input carent color */
+::ng-deep .mat-input-element {
+  caret-color: hsl(214, 58%, 47%) !important;
+}
+
+/* // mat-label normal state style */
+::ng-deep .mat-form-field-label {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* // mat-label focused style */
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: hsl(214, 58%, 47%) !important;
+}
+
+.action-icon {
+  background-color: #014b76;
+}
+
+.do-not-show {
+  display: none;
+}
+
+.toggle-placement {
+  padding: 15px;
+}

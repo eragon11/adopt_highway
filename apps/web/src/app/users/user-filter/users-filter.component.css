@@ -1,0 +1,113 @@
+/* User filters  */
+:host {
+  margin-right: 5%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 50%;
+  justify-content: end;
+}
+
+.report-filter-input-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: hsl(214, 58%, 47%);
+  margin-right: 5%;
+}
+
+#add-user button {
+  color: hsl(240, 9%, 98%);
+}
+
+#maintenance-filter[disabled] {
+  border: hsl(210, 3%, 54%) solid 1px;
+  color: hsl(210, 3%, 54%);
+  background: hsl(0, 0%, 93%)
+}
+
+#user-search {
+  display: inline-flex;
+  position: relative;
+}
+
+#user-search-input {
+  text-indent:25px;
+}
+
+#user-role-filter {
+  margin: 0 25px 10px 0px;
+  cursor: pointer;
+}
+
+.mat-flat-button {
+  border: hsl(214, 58%, 47%) solid 2px;
+  height: 30px;
+  line-height: 0;
+}
+
+#mat-filter-type-icon {
+  margin-top: 5px;
+}
+
+#mat-icon-search {
+  position: absolute;
+  left: 0;
+  margin: 3px 5px;
+}
+
+/* users pagination */
+#user-list-paginator {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(0, 0%, 0%);
+  text-align: center;
+}
+
+.tooltip {
+  background-color: hsl(214, 58%, 47%);
+  color: white;
+  font-size: 14px;
+}
+
+#filter-user-roles div.mat-select-arrow-wrapper {
+  display: none;
+}
+
+#filter-user-roles.mat-select {
+  display: inline;
+}
+
+#filter-user-roles-panel.mat-select-panel {
+  overflow: none;
+  height: fit-content;
+  max-height:fit-content;
+  padding: 10px 5px 0 5px;
+  transform: translateX(-25px) translateY(-20px)  !important;
+}
+
+.all-types-select {
+  display:flex;
+  justify-content: space-evenly;
+  margin: 15px 0 20px 0;
+}
+
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: unset;
+}
+
+::ng-deep .mat-option-pseudo-checkbox.mat-pseudo-checkbox-checked {
+    background-color:  hsl(214, 58%, 47%);
+}
+
+.mat-optgroup > .mat-optgroup-label {
+  border-bottom: .5px solid  hsla(0, 0%, 28%, 0.74);
+}
+
+.mat-optgroup-label {
+  color:hsl(0, 0%, 0%);
+}
+

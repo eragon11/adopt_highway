@@ -1,0 +1,870 @@
+<nav aria-label="Main" role="navigation">
+  <div id="custom_header" role="navigation" class="flex-container" aria-label="Main" *ngIf="!isAnonymousUser">
+    <div id="wrapper1" class="flex-container">
+      <app-sidenav-toggle></app-sidenav-toggle>
+    </div>
+  </div>
+</nav>
+<main role="main">
+  <div class="pageContainer">
+    <section>
+      <mat-toolbar class="app-toolbar" *ngIf="!isAnonymousUser">
+        <a class="backButton" (click)="backToAgreements()">
+          < New Agreements</a> <span class="spacer"></span>
+            <button mat-button class="toolbar-accept-button" (click)="onApprove()"
+              *ngIf="!isAnonymousUser && applicationStatus == awaitingSignApproval && currentRole === 'Administrator'">Approve
+              Sign</button>
+            <button mat-button class="toolbar-reject-button" (click)="onReject()"
+              *ngIf="!isAnonymousUser && applicationStatus == awaitingSignApproval && currentRole === 'Administrator'">Reject
+              Sign</button>
+            <button mat-button class="toolbar-accept-button"
+              *ngIf="showRequest && currentRole === 'District Coordinator'"
+              (click)="openRequestDialog(); false;">Request Sign Approval</button>
+            <button mat-button class="toolbar-accept-button" [disabled]="isFormInvalid() || applicationForm.dirty"
+              *ngIf="applicationStatus == statuses.FinalReviewCreateAgreement && (currentRole === 'District Coordinator' || currentRole === 'Administrator')"
+              (click)="openSignDialog()">Begin Signing Process</button>
+      </mat-toolbar>
+      <form class="application-form-box" fxLayout="column" [formGroup]="applicationForm">
+        <mat-card>
+          <div class="confirmLabel" *ngIf="showConfirm && isAnonymousUser">
+            Please review your application and update if necessary before confirmation.
+          </div>
+          <mat-card-header class="header">
+            <mat-card-title class="title">
+              <h1>Adopt-a-Highway - Application</h1>
+            </mat-card-title>
+          </mat-card-header>
+          <hr class="dashed-line" />
+          <mat-card-content>
+            <div class="form-container">
+              <div fxLayout="row" fxFlex fxLayoutAlign="start center">
+                <div fxFlex="50">
+                  <span class="required">required</span>
+                </div>
+              </div>
+
+              <hr class="solid-line" />
+
+              <div class="mb-20" fxLayout="row">
+                <div fxLayout="column" fxLayoutGap="12">
+                  <mat-label class="required">Is your group a school or college organization?</mat-label>
+                  <mat-radio-group fxLayout="column" fxLayoutGap="10" formControlName="isSchool">
+                    <mat-radio-button [value]="true">Yes</mat-radio-button>
+                    <mat-radio-button [value]="false">No</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <ng-container *ngIf="applicationForm.controls.isSchool.value">
+                <div fxLayout="row" fxFlex fxLayoutAlign="start center">
+                  <div fxFlex="50">
+                    <span class="label-16">School/College Representative</span>
+                  </div>
+                  <div fxFlex="50">
+                  </div>
+                </div>
+
+                <hr class="solid-line" />
+
+                <div fxLayout="column" class="mtb-10">
+                  <span class="mb-10">If you are part of a school or college organizations you must include the
+                    following
+                    contact information for you faculty sponsor</span>
+                  <div fxLayout="row" fxFlex fxLayoutGap="30">
+                    <div fxFlex="50" fxLayout="column">
+                      <div fxLayout="column">
+                        <mat-label class="required">Name</mat-label>
+                        <mat-form-field class="application-form-field" appearance="outline">
+                          <input matInput formControlName="schoolName" />
+                          <mat-error>
+                            <span>Name is required</span>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div fxLayout="row" fxFlex="50" fxLayoutGap="30">
+                      <div fxFlex="50" fxLayout="column">
+                        <div fxLayout="column">
+                          <mat-label class="required">Phone</mat-label>
+                          <mat-form-field appearance="outline">
+                            <tel-input formControlName="schoolPhoneNumber" (keypress)="keyPressNumberOnly($event)"
+                              (keyup)="phoneUpdate()" required></tel-input>
+                            <mat-error *ngIf="applicationForm.get('schoolPhoneNumber').invalid || !isPhoneValid">Please
+                              enter a
+                              valid phone
+                              number</mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex fxLayoutGap="30">
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">Email</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput formControlName="schoolEmail"
+                          (blur)="isConfirmSchoolEmailInvalid = compareEmail('schoolEmail','schoolConfirmEmail')"
+                          email />
+                        <mat-error *ngIf="applicationForm.controls.schoolEmail.errors?.required">
+                          <span>Email is required</span>
+                        </mat-error>
+                        <mat-error *ngIf="applicationForm.controls.schoolEmail.errors?.email">
+                          <span>Invalid Email</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">Confirm Email</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput formControlName="schoolConfirmEmail"
+                          (blur)="isConfirmSchoolEmailInvalid = compareEmail('schoolEmail','schoolConfirmEmail')"
+                          email />
+                        <mat-error
+                          *ngIf="isConfirmSchoolEmailInvalid && !applicationForm.controls.schoolConfirmEmail.errors?.required && !applicationForm.controls.schoolConfirmEmail.errors?.email">
+                          <span>Email and Confirm Email should match.</span>
+                        </mat-error>
+                        <mat-error *ngIf="applicationForm.controls.schoolConfirmEmail.errors?.required">
+                          <span>Confirm email is required</span>
+                        </mat-error>
+                        <mat-error *ngIf="applicationForm.controls.schoolConfirmEmail.errors?.email">
+                          <span>Invalid Email</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                </div>
+              </ng-container>
+
+              <div fxLayout="row" fxFlex fxLayoutAlign="start center">
+                <div fxFlex="50">
+                  <span class="label-16">Individual/organization</span>
+                </div>
+              </div>
+              <hr class="solid-line" />
+
+              <div fxLayout="column" class="mtb-10">
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <div fxLayout="column">
+                      <mat-label class="required">Group Name</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput formControlName="groupName" aria-label="Group Name" />
+                        <mat-error>
+                          <span>Group name is required</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxFlex="50" fxLayout="column">
+                    <div fxLayout="column">
+                      <mat-label>Group Website</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput formControlName="groupWebsiteUrl" aria-label="Group Website" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <div fxLayout="column">
+                      <mat-label class="required">Group Description</mat-label>
+                      <mat-form-field appearance="outline">
+                        <textarea maxlength="500" rows="3" matInput formControlName="groupDescription"
+                          aria-label="Group Description"></textarea>
+                        <mat-error>
+                          <span>Group Description is required</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex="50" fxLayoutGap="30">
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">Group Type</mat-label>
+                      <mat-form-field appearance="outline">
+                        <mat-select [formControl]="applicationForm.controls.groupType">
+                          <mat-option *ngFor="let group of groupTypes | keyvalue" [value]="group.value">{{group.key}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error>
+                          <span>Group Type is required</span>
+                        </mat-error>
+                        <mat-label>Select a Group Type</mat-label>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">Estimated no. of volunteers</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput type="number" min="1" formControlName="estimateNumberOfVolunteers"
+                          aria-label="Estimated number of volunteers" />
+                        <mat-error>
+                          <span>Estimated no. of volunteers is required and it should be 0 or greater.</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <div fxLayout="column">
+                      <mat-label class="required">Address Line 1</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput placeholder="Street and number, P.O box, c/o"
+                          formControlName="groupAddressLine1" />
+                        <mat-error>
+                          <span>Address Line1 is required</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxFlex="50" fxLayout="column">
+                    <div fxLayout="column">
+                      <mat-label>Address Line 2</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput placeholder="Apartment, suite, unit, building, floor, etc."
+                          formControlName="groupAddressLine2" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">City</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="groupCity" aria-label="Group City" />
+                      <mat-error>
+                        <span>City is required</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxLayout="row" fxLayoutGap="30">
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">Zip</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput minlength="5" formControlName="groupPostalCode" required
+                          aria-label="Group Postal Code" />
+                        <mat-error>
+                          <span>Zip should be of format 12345-1234</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">County</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input type="text" placeholder="Select County" aria-label="County" matInput autocomplete="off"
+                          [formControl]="applicationForm.controls.groupCountyNumber" [matAutocomplete]="auto"
+                          autocomplete="doNotAutoComplete">
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                          <mat-option *ngFor="let county of groupCounties | async" [value]="county.number">
+                            {{county.name}}
+                          </mat-option>
+                        </mat-autocomplete>
+                        <mat-error>
+                          <span>County is required</span>
+                        </mat-error>
+                        <mat-label>Select a County</mat-label>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div fxLayout="row" fxFlex fxLayoutAlign="start center" class="mtb-20">
+                <div fxFlex="50">
+                  <span class="label-16">Authorized Representative</span>
+                </div>
+                <div fxFlex="50">
+                </div>
+              </div>
+
+              <hr class="solid-line" />
+
+              <div fxLayout="column" class="mtb-10">
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">First name</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="primaryContactFirstName"
+                        aria-label="Primary Contact First Name" />
+                      <mat-error>
+                        <span>First name is required</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">Last name</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="primaryContactLastName" aria-label="Primary Contact Last Name" />
+                      <mat-error>
+                        <span>Last name is required</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">Address Line 1</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput placeholder="Street and number, P.O box, c/o"
+                        formControlName="primaryContactAddressLine1" />
+                      <mat-error>
+                        <span>Address Line 1 is required</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label>Address Line 2</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput placeholder="Apartment, suite, unit, building, floor, etc."
+                        formControlName="primaryContactAddressLine2" />
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">City</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="primaryContactCity" aria-label="Primary Contact City" />
+                      <mat-error>
+                        <span>City is required</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxLayout="row" fxLayoutGap="30">
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">Zip</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput minlength="5" formControlName="primaryContactPostalCode" required
+                          aria-label="Primary Contact Postal Code" />
+                        <mat-error>
+                          <span>Zip should be of format 12345-1234</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">County</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input type="text" placeholder="Select County" aria-label="County" matInput
+                          [formControl]="applicationForm.controls.primaryContactCountyNumber" [matAutocomplete]="auto1"
+                          autocomplete="doNotAutoComplete">
+                        <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" [displayWith]="displayFn">
+                          <mat-option *ngFor="let county of authorizedCounties | async" [value]="county.number">
+                            {{county.name}}</mat-option>
+                        </mat-autocomplete>
+                        <mat-error>
+                          <span>County is required</span>
+                        </mat-error>
+                        <mat-label>Select a County</mat-label>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">Email</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="primaryContactEmail"
+                        (blur)="isConfirmPrimaryEmailInvalid = compareEmail('primaryContactEmail','primaryContactConfirmEmail')"
+                        email aria-label="Primary Contact Email" />
+                      <mat-error *ngIf="applicationForm.controls.primaryContactEmail.errors?.required">
+                        <span>Email is required</span>
+                      </mat-error>
+                      <mat-error *ngIf="applicationForm.controls.primaryContactEmail.errors?.email">
+                        <span>Invalid Email</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">Confirm Email</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="primaryContactConfirmEmail"
+                        (blur)="isConfirmPrimaryEmailInvalid = compareEmail('primaryContactEmail','primaryContactConfirmEmail')"
+                        email aria-label="Primary Contact Confirm Email" />
+                      <mat-error *ngIf="applicationForm.controls.primaryContactConfirmEmail.errors?.required">
+                        <span>Email is required</span>
+                      </mat-error>
+                      <mat-error *ngIf="applicationForm.controls.primaryContactConfirmEmail.errors?.email">
+                        <span>Invalid Email</span>
+                      </mat-error>
+                      <mat-error
+                        *ngIf="isConfirmPrimaryEmailInvalid && !applicationForm.controls.primaryContactConfirmEmail.errors?.required && !applicationForm.controls.primaryContactConfirmEmail.errors?.email">
+                        <span>Email and Confirm Email should match.</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="25" fxLayout="column">
+                    <mat-label class="required">Phone</mat-label>
+                    <mat-form-field appearance="outline">
+                      <tel-input formControlName="primaryContactPhoneNumber" (keypress)="keyPressNumberOnly($event)"
+                        (keyup)="phoneUpdate()" required></tel-input>
+                      <mat-error *ngIf="applicationForm.get('primaryContactPhoneNumber').invalid || !isPhoneValid">
+                        Please
+                        enter a
+                        valid phone
+                        number</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </div>
+
+              <div fxLayout="row" fxFlex fxLayoutAlign="start center">
+                <div fxFlex="50">
+                  <span class="label-16">Alternate Representative</span>
+                </div>
+                <div fxFlex="50">
+                </div>
+              </div>
+
+              <hr class="solid-line" />
+
+              <div fxLayout="column" class="mtb-10">
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">First name</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="secondaryContactFirstName"
+                        aria-label="Secondary Contact First Name" />
+                      <mat-error>
+                        <span>First name is required</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">Last name</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="secondaryContactLastName"
+                        aria-label="Secondary Contact Last Name" />
+                      <mat-error>
+                        <span>Last name is required</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">Address Line 1</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput placeholder="Street and number, P.O box, c/o"
+                        formControlName="secondaryContactAddressLine1" />
+                      <mat-error>
+                        <span>Address Line 1 is required</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label>Address Line 2</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput placeholder="Apartment, suite, unit, building, floor, etc."
+                        formControlName="secondaryContactAddressLine2" />
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">City</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="secondaryContactCity" aria-label="Secondary Contact City" />
+                      <mat-error>
+                        <span>City is required</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxLayout="row" fxLayoutGap="30">
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">Zip</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput minlength="5" formControlName="secondaryContactPostalCode" required
+                          aria-label="Secondary Contact Postal Code" />
+                        <mat-error>
+                          <span>Zip should be of format 12345-1234</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">County</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input type="text" placeholder="Select County" aria-label="County" matInput
+                          [formControl]="applicationForm.controls.secondaryContactCountyNumber"
+                          [matAutocomplete]="auto2" autocomplete="doNotAutoComplete">
+                        <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete" [displayWith]="displayFn">
+                          <mat-option *ngFor="let county of alternateCounties | async" [value]="county.number">
+                            {{county.name}}</mat-option>
+                        </mat-autocomplete>
+                        <mat-error>
+                          <span>County is required</span>
+                        </mat-error>
+                        <mat-label>Select a County</mat-label>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">Email</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="secondaryContactEmail" email
+                        (blur)="isConfirmSecondaryEmailInvalid = compareEmail('secondaryContactEmail','secondaryContactConfirmEmail')"
+                        aria-label="Secondary Contact Email" />
+                      <mat-error *ngIf="applicationForm.controls.secondaryContactEmail.errors?.required">
+                        <span>Email is required</span>
+                      </mat-error>
+                      <mat-error *ngIf="applicationForm.controls.secondaryContactEmail.errors?.email">
+                        <span>Invalid Email</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="50" fxLayout="column">
+                    <mat-label class="required">Confirm Email</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput formControlName="secondaryContactConfirmEmail"
+                        (blur)="isConfirmSecondaryEmailInvalid = compareEmail('secondaryContactEmail','secondaryContactConfirmEmail')"
+                        email aria-label="Secondary Contact Confirm Email" />
+                      <mat-error *ngIf="applicationForm.controls.secondaryContactConfirmEmail.errors?.required">
+                        <span>Email is required</span>
+                      </mat-error>
+                      <mat-error *ngIf="applicationForm.controls.secondaryContactConfirmEmail.errors?.email">
+                        <span>Invalid Email</span>
+                      </mat-error>
+                      <mat-error
+                        *ngIf="isConfirmSecondaryEmailInvalid && !applicationForm.controls.secondaryContactConfirmEmail.errors?.required && !applicationForm.controls.secondaryContactConfirmEmail.errors?.email">
+                        <span>Email and Confirm Email should match.</span>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="row" fxLayoutGap="30">
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">Phone</mat-label>
+                      <mat-form-field appearance="outline">
+                        <tel-input formControlName="secondaryContactPhoneNumber" (keypress)="keyPressNumberOnly($event)"
+                          (keyup)="phoneUpdate()" required></tel-input>
+                        <mat-error *ngIf="applicationForm.get('secondaryContactPhoneNumber').invalid || !isPhoneValid">
+                          Please enter a
+                          valid phone
+                          number</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div fxLayout="row" fxFlex fxLayoutAlign="start center">
+                <div fxFlex="50">
+                  <span class="label-16">Roadway Information</span>
+                </div>
+                <div fxFlex="50">
+                </div>
+              </div>
+
+              <hr class="solid-line" />
+
+              <div fxLayout="column" class="mtb-10">
+                <div fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <div fxLayout="column">
+                      <mat-label class="required">Request a stretch of highway</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput formControlName="requestedHighwayDescription"
+                          aria-label="Request a stretch of highway" />
+                        <mat-error>
+                          <span>Request a stretch of highway is required</span>
+                        </mat-error>
+                        <mat-hint>eg. U.S. 290 between Austin and Johnson City</mat-hint>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxFlex="50" fxLayout="column">
+                    <div fxLayout="column">
+                      <mat-label>Request an alternate stretch of highway</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput formControlName="requestedAlternateHighwayDescription"
+                          aria-label="Request an alternate of highway" />
+                        <mat-hint>eg. U.S. 290 between Austin and Johnson City</mat-hint>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayout="row" fxFlex fxLayoutGap="30" *ngIf="showSegment" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <div fxLayout="column">
+                      <mat-label>Available Segment Id</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput formControlName="aahSegmentId" (blur)="onSegementIdBlur()"
+                          aria-label="Available Segment Id" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxFlex="50" fxLayout="column">
+                    <div fxLayout="column">
+                      <mat-label>Available Segment Name</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput class="disabledField" formControlName="aahRouteName"
+                          aria-label="Available Segment Name" readonly />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-10" fxLayout="row" fxFlex fxLayoutGap="30" class="mtb-20">
+                  <div fxFlex="50" fxLayout="column">
+                    <div fxLayout="column">
+                      <mat-label class="required">County</mat-label>
+                      <mat-form-field class="form-field-50" appearance="outline">
+                        <input type="text" placeholder="Select County" aria-label="County" matInput
+                          [formControl]="applicationForm.controls.requestedHighwayCountyNumber"
+                          [matAutocomplete]="auto3" autocomplete="doNotAutoComplete">
+                        <mat-autocomplete autoActiveFirstOption #auto3="matAutocomplete" [displayWith]="displayFn">
+                          <mat-option *ngFor="let county of roadWayCounties | async" [value]="county.number">
+                            {{county.name}}</mat-option>
+                        </mat-autocomplete>
+                        <mat-error>
+                          <span>County is required</span>
+                        </mat-error>
+                        <mat-label>Select a County</mat-label>
+                      </mat-form-field>
+                      <div fxFlex="100" *ngIf="showConfirm && isAnonymousUser" class="updateInfo" fxLayout="row"
+                        fxLayoutAlign="start center" fxLayoutGap="20">
+                        <span class="label">If any changes have been made, click update to save them. Once this
+                          application has been confirmed any additional update will need to be coordinated with you
+                          program liason.</span></div>
+                    </div>
+                    <div fxFlex="100" *ngIf="showConfirm && isAnonymousUser" class="updateButtonContainer"
+                      fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20">
+                      <button mat-stroked-button class="updateButton" type="submit"
+                        (click)="onUpdateClick(); false;">Update</button>
+                    </div>
+                  </div>
+                  <div fxFlex="50" fxLayout="column">
+                  </div>
+                </div>
+
+              </div>
+
+              <ng-container
+                *ngIf="(currentRole === this.roles.District || currentRole===this.roles.Administrator) && (applicationStatus === statuses.FinalReviewCreateAgreement || applicationStatus === statuses.DocumentCreated)">
+                <div fxLayout=" row" fxFlex fxLayoutAlign="start center">
+                  <div fxFlex="50">
+                    <span class="label-16" aria-label="Agreement Details">Agreement Details</span>
+                  </div>
+                  <div fxFlex="50">
+                  </div>
+                </div>
+
+                <hr class="solid-line" />
+
+                <div fxLayout="column" class="mtb-10">
+                  <span class="mb-10">This information must be filled out by an Administrator or District
+                    Coordinator</span>
+                  <div fxLayout="row" fxFlex fxLayoutGap="30">
+                    <div fxFlex="50" fxLayout="column">
+                      <div fxLayout="column" id="agrmtStartDate">
+                        <mat-label class="required">Agreement Start Date</mat-label>
+                        <mat-form-field appearance="outline" class="dateFormField">
+                          <input matInput [matDatepicker]="agreementStartDate" formControlName="agreementStartDate"
+                            class="dateInput" (dateChange)="dateChange('change', $event, 'agreementStartDate')">
+                          <mat-hint>MM/DD/YYYY</mat-hint>
+                          <mat-datepicker-toggle matIconSuffix [for]="agreementStartDate"></mat-datepicker-toggle>
+                          <mat-datepicker #agreementStartDate></mat-datepicker>
+                          <mat-error>
+                            <span>Agreement Start Date is required</span>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div fxFlex="50" fxLayout="column">
+                      <div fxLayout="column" id="agrmtEndDate">
+                        <mat-label class="required">Agreement End Date</mat-label>
+                        <mat-form-field appearance="outline" class="dateFormField">
+                          <input matInput [matDatepicker]="agreementEndDate" formControlName="agreementEndDate"
+                            class="dateInput" (dateChange)="dateChange('change', $event, 'agreementEndDate')">
+                          <mat-hint>MM/DD/YYYY</mat-hint>
+                          <mat-datepicker-toggle matIconSuffix [for]="agreementEndDate"></mat-datepicker-toggle>
+                          <mat-datepicker #agreementEndDate></mat-datepicker>
+                          <mat-error>
+                            <span>Agreement End Date is required</span>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex fxLayoutGap="30">
+                    <div fxFlex="50" fxLayout="column" id="pickupsStartDate">
+                      <mat-label class="required">Pickups Start Date</mat-label>
+                      <mat-form-field appearance="outline" class="dateFormField">
+                        <input matInput [matDatepicker]="pickupsStartDate" formControlName="pickupsStartDate"
+                          class="dateInput" (dateChange)="dateChange('change', $event, 'pickupsStartDate')">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="pickupsStartDate"></mat-datepicker-toggle>
+                        <mat-datepicker #pickupsStartDate></mat-datepicker>
+                        <mat-error>
+                          <span>Agreement End Date is required</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="50" fxLayout="column">
+                      <mat-label class="required">Required number of Pickups</mat-label>
+                      <mat-form-field appearance="outline">
+                        <input matInput type="number" min="2" max="6" formControlName="requiredPickupsPerYear"
+                          aria-label="Required number of Pickups" value="4" />
+                        <mat-error>
+                          <span>Number of Pickups is Required</span>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div fxLayout="row" fxFlex fxLayoutGap="40">
+                    <div fxFlex="49" fxLayout="column">
+                      <mat-label class="required">District Coordinator</mat-label>
+                      <mat-form-field appearance="outline">
+                        <mat-select [formControl]="applicationForm.controls.txdotContactUserId">
+                          <mat-option *ngFor="let districtCoordinator of districtCoordinators"
+                            [value]="districtCoordinator.id">
+                            {{districtCoordinator.fullName}}
+                          </mat-option>
+                        </mat-select>
+                        <mat-error>
+                          <span>District Coordinator is Required</span>
+                        </mat-error>
+                        <mat-label>Select a District Coordinator</mat-label>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                </div>
+              </ng-container>
+
+              <div fxLayout="row" fxFlex fxLayoutAlign="start center">
+                <div fxFlex="50">
+                  <span class="label-16">Desired Sign Name</span>
+                </div>
+                <div fxFlex="50">
+                </div>
+              </div>
+
+              <hr class="solid-line" />
+              <div fxLayout="column" class="sign-box-content" fxLayoutGap="20">
+                <div fxFlex="50" fxLayout="column" class="mtb-20">
+                  <mat-label class="required">Line 1</mat-label>
+                  <mat-form-field appearance="outline" class="half-width">
+                    <input matInput #signLine_1 formControlName="signLine_1" placeholder="Line 1 is required *"
+                      maxlength="13" (focus)="onFocusSignBoxInput(signBoxHint1, signLine_1)"
+                      (blur)="onBlurSignBoxInput(signBoxHint1)"
+                      (input)="onInputSignBoxHint(signLine_1,  signLine_2, 'signLine_1')"
+                      aria-label="Desired Sign Name Line 1" />
+                      <mat-error *ngIf="maxLineLength===11 && applicationForm.controls.signLine_1.value">
+                        <span>Only 11 characters are allowed for signs with less than four lines</span>
+                    </mat-error>
+                    <mat-error *ngIf="applicationForm.controls.signLine_1.value?.length === 0">Line 1 is required.</mat-error>
+                    <mat-error *ngIf="this.applicationForm.controls.signLine_1.errors?.spaces">Too many spaces. Signs
+                      only
+                      allow for 2 spaces per row.</mat-error>
+                    <mat-hint #signBoxHint1>
+                      {{maxLineLength - (applicationForm.controls.signLine_1.value?.length || 0)}} characters left
+                    </mat-hint>
+
+
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" fxLayout="column" class="mtb-20">
+                  <mat-label>Line 2</mat-label>
+                  <mat-form-field appearance="outline" class="half-width">
+                    <input matInput #signLine_2 maxlength="13" formControlName="signLine_2"
+                      (focus)="onFocusSignBoxInput(signBoxHint2, signLine_2)" (blur)="onBlurSignBoxInput(signBoxHint2)"
+                      (input)="onInputSignBoxHint(signLine_2,  signLine_3, 'signLine_2')"
+                      aria-label="Desired Sign Name Line 2" />
+                      <mat-error *ngIf="maxLineLength===11 && applicationForm.controls.signLine_2.value">
+                        <span>Only 11 characters are allowed for signs with less than four lines</span>
+                    </mat-error>
+                    <mat-error *ngIf="this.applicationForm.controls.signLine_2.errors?.spaces">Too many spaces. Signs
+                      only allow for 2 spaces per row.</mat-error>
+                    <mat-error *ngIf="this.applicationForm.controls.signLine_2.errors?.empty">Empty values are not
+                      allowed in between lines.</mat-error>
+                    <mat-hint #signBoxHint2>
+                      {{maxLineLength - (applicationForm.controls.signLine_2.value?.length || 0)}} characters left
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" fxLayout="column" class="mtb-20">
+                  <mat-label>Line 3</mat-label>
+                  <mat-form-field appearance="outline" class="half-width">
+                    <input matInput #signLine_3 maxlength="13" formControlName="signLine_3"
+                      (focus)="onFocusSignBoxInput(signBoxHint3, signLine_3)" (blur)="onBlurSignBoxInput(signBoxHint3)"
+                      (input)="onInputSignBoxHint(signLine_3,  signLine_4, 'signLine_3')"
+                      aria-label="Desired Sign Name Line 3" />
+                    <mat-error *ngIf="maxLineLength===11">
+                      <span>Only 11 characters are allowed for signs with less than four lines</span>
+                    </mat-error>
+                    <mat-error *ngIf="this.applicationForm.controls.signLine_3.errors?.spaces">Too many spaces. Signs
+                      only
+                      allow for 2 spaces per row.</mat-error>
+                    <mat-error *ngIf="this.applicationForm.controls.signLine_3.errors?.empty">Empty values are not
+                      allowed in between lines.</mat-error>
+                    <mat-hint #signBoxHint3>
+                      {{maxLineLength - (applicationForm.controls.signLine_3.value?.length || 0)}} characters left
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="50" fxLayout="column" class="mtb-20">
+                  <mat-label>Line 4</mat-label>
+                  <mat-form-field appearance="outline" class="half-width">
+                    <input matInput #signLine_4 maxlength="13" formControlName="signLine_4"
+                      (focus)="onFocusSignBoxInput(signBoxHint4, signLine_4)" (blur)="onBlurSignBoxInput(signBoxHint4)"
+                      (input)="onInputSignBoxHint(signLine_4,  null, 'signLine_4')"
+                      aria-label="Desired Sign Name Line 4" />
+                    <mat-error *ngIf="this.applicationForm.controls.signLine_4.errors?.spaces">Too many spaces. Signs
+                      only
+                      allow for 2 spaces per row.</mat-error>
+                    <mat-hint #signBoxHint4>
+                      {{maxLineLength - (applicationForm.controls.signLine_4.value?.length || 0)}} characters left
+                    </mat-hint>
+                  </mat-form-field>
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start">
+                  <span class="mtb-10">see <a href="https://ftp.txdot.gov/pub/txdot-info/trv/aah/guidelines.pdf"
+                      target="_blank">sign guidelines</a></span>
+                </div>
+
+                <div class="confirmLabel" *ngIf="showConfirm && isAnonymousUser">
+                  Once you have reviewed please click confirm to submit the application or click delete to remove it.
+                  You have 24 hours to confirm, otherwise the application will be deleted automatically.
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="center center" class="submitError" *ngIf="!applicationForm.valid">
+                  Error: Please fix the highlighted items above before continuing.
+                </div>
+                <div class="mt-10 mb-20" fxLayout="row" fxFlex fxLayoutAlign="center center" fxLayoutGap="30">
+                  <button mat-stroked-button class="green-button" *ngIf="showSubmit" type="submit"
+                    (click)="onClickSubmitForm(); false;">Submit</button>
+                  <button mat-stroked-button class="green-button" *ngIf="showUpdate" type="submit"
+                    (click)="onUpdateClick(); false;">Update</button>
+                  <button mat-stroked-button class="green-button" *ngIf="showConfirm" type="submit"
+                    (click)="confirmApp(); false;">Confirm</button>
+                  <button mat-stroked-button *ngIf="showDelete" (click)="onClickResetForm(); false;">Delete</button>
+                </div>
+              </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="center center" class="footer">
+              Copyright 2022 &bull; Texas Department of Transportation &bull; All Rights Reserved &bull; Disclaimer
+              &bull;
+              Privacy & Security Policy &bull; Accessibility
+              125 East 11th Street &bull; Austin, Texas 78701
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </form>
+    </section>
+  </div>
+</main>

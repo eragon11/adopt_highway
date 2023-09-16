@@ -1,0 +1,13 @@
+<div id="delete-container">
+  <div id="delete-header-container">
+    <mat-icon class="delete-icon" aria-hidden="false" aria-label="Delete user icon">delete</mat-icon><span
+      id="delete-header">Delete Pickup</span>
+  </div>
+  <mat-dialog-content class="delete-pickup-content">
+    <p>Are you sure you want to delete the pickup from <i><b>{{ data.date }}</b></i>?</p>
+  </mat-dialog-content>
+  <mat-dialog-actions id="delete-dialog-buttons">
+    <button id="cancel-button" mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button [mat-dialog-close]="true">Delete</button>
+  </mat-dialog-actions>
+</div>

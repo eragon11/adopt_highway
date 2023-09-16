@@ -1,0 +1,28 @@
+
+  #txdot_banner {
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    left: 0;
+    height: 100px;
+    width: 100%;
+  }
+  #txdot_banner_img {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  #txdot_logo {
+    position: absolute;
+    display: flex;
+    left: 20px;
+    top: 5px;
+  }
+  .environmentBanner {
+    height: 25px;
+    padding-left: 10px;
+    position: relative;
+    top: 0;
+    left: 0;
+  }

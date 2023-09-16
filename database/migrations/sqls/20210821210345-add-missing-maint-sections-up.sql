@@ -1,0 +1,240 @@
+CREATE
+OR ALTER PROCEDURE aah_insert_missing_maintenance_sections AS 
+BEGIN;
+SET NOCOUNT ON;
+DECLARE @ms_name NVARCHAR(255),
+	@ms_number NVARCHAR(255),
+	@ms_district INT,
+	@ms_county INT;
+DECLARE @maintenance_section TABLE (
+		[ORGANIZATION_ID] [int] NULL,
+		[NAME] [varchar](50) NOT NULL,
+		[NUMBER] [int] NULL,
+		[COUNTY_ID] [int] NULL,
+		[DISTRICT_ID] [int] NULL,
+		[MAINT_SECT_CNTCT_NM] NVARCHAR(MAX),
+		[CREATE_DTTM] DATETIME2
+	);
+INSERT INTO @maintenance_section (
+		[NAME],
+		[NUMBER],
+		[DISTRICT_ID],
+		[COUNTY_ID],
+		[MAINT_SECT_CNTCT_NM],
+		[CREATE_DTTM]
+	)
+SELECT DISTINCT (RTRIM(UPPER(ms.[MAINT_SECT_NM]))),
+	MAINT_SECT_NBR,
+	d.DISTRICT_ID,
+	c.COUNTY_ID,
+	RTRIM(LTRIM(UPPER(ms.[MAINT_SECT_CNTCT_NM]))),
+	ms.[CREATE_DTTM]
+FROM aah_legacy..MAINT_SECT ms
+	LEFT JOIN DISTRICT d ON LTRIM(RTRIM(ms.DIST_ABRVN_NM)) = LTRIM(RTRIM(d.CODE))
+	LEFT JOIN COUNTY c ON FORMAT(ms.TXDOT_CNTY_NBR, '00#') = c.CODE;
+-- Normalize the contact names
+UPDATE @maintenance_section
+SET MAINT_SECT_CNTCT_NM = REPLACE(MAINT_SECT_CNTCT_NM, '(MARTY)', 'Marty')
+FROM @maintenance_section;
+UPDATE @maintenance_section
+SET MAINT_SECT_CNTCT_NM = REPLACE(REPLACE(MAINT_SECT_CNTCT_NM, '(', ';'), ')', '')
+FROM @maintenance_section;
+UPDATE @maintenance_section
+SET MAINT_SECT_CNTCT_NM = REPLACE(MAINT_SECT_CNTCT_NM, 'Ms.', '')
+FROM @maintenance_section;
+UPDATE @maintenance_section
+SET MAINT_SECT_CNTCT_NM = REPLACE(MAINT_SECT_CNTCT_NM, 'Mr.', '')
+FROM @maintenance_section;
+UPDATE @maintenance_section
+SET MAINT_SECT_CNTCT_NM = REPLACE(MAINT_SECT_CNTCT_NM, ',', ';')
+FROM @maintenance_section;
+UPDATE @maintenance_section
+SET MAINT_SECT_CNTCT_NM = REPLACE(MAINT_SECT_CNTCT_NM, ' or ', ';')
+FROM @maintenance_section;
+UPDATE @maintenance_section
+SET MAINT_SECT_CNTCT_NM = REPLACE(MAINT_SECT_CNTCT_NM, ' & ', ';')
+FROM @maintenance_section;
+-- update any existing orgs
+UPDATE @maintenance_section
+SET ORGANIZATION_ID = t2.ORGANIZATION_ID
+FROM @maintenance_section t1
+	INNER JOIN MAINTENANCE_SECTION t2 ON LTRIM(RTRIM(UPPER(t1.NAME))) = LTRIM(RTRIM(UPPER(t2.NAME)))
+	AND t1.NUMBER = t2.NUMBER
+	AND t1.COUNTY_ID = t2.COUNTY_ID
+	AND t1.DISTRICT_ID = t2.DISTRICT_ID;
+DECLARE ms_cursor CURSOR FOR
+SELECT [NAME],
+	[NUMBER],
+	[DISTRICT_ID],
+	[COUNTY_ID]
+FROM @maintenance_section
+WHERE ORGANIZATION_ID IS NULL
+ORDER BY [NUMBER];
+OPEN ms_cursor FETCH NEXT
+FROM ms_cursor INTO @ms_name,
+	@ms_number,
+	@ms_district,
+	@ms_county;
+WHILE @@FETCH_STATUS = 0 BEGIN;
+INSERT INTO ORGANIZATION ([TYPE])
+VALUES ('Maintenance Section');
+UPDATE @maintenance_section
+SET ORGANIZATION_ID = SCOPE_IDENTITY()
+WHERE [NAME] = @ms_name
+	AND [NUMBER] = @ms_number
+	AND [DISTRICT_ID] = @ms_district
+	AND [COUNTY_ID] = @ms_county;
+FETCH NEXT
+FROM ms_cursor INTO @ms_name,
+	@ms_number,
+	@ms_district,
+	@ms_county;
+END;
+CLOSE ms_cursor;
+DEALLOCATE ms_cursor;
+INSERT INTO [MAINTENANCE_SECTION] (
+		[ORGANIZATION_ID],
+		[NAME],
+		[NUMBER],
+		[COUNTY_ID],
+		[DISTRICT_ID]
+	)
+SELECT ms.[ORGANIZATION_ID],
+	ms.[NAME],
+	ms.[NUMBER],
+	ms.[COUNTY_ID],
+	ms.[DISTRICT_ID]
+FROM @maintenance_section ms
+	LEFT JOIN MAINTENANCE_SECTION t1 ON ms.[NUMBER] = t1.[NUMBER]
+	AND ms.[NAME] = t1.[name]
+	AND ms.COUNTY_ID = t1.COUNTY_ID
+	AND ms.DISTRICT_ID = t1.DISTRICT_ID
+WHERE t1.[NUMBER] IS NULL;
+-- insert maintenance coordinators
+DECLARE @user_person TABLE (
+		ORGANIZATION_ID INT NOT NULL,
+		[USERNAME] NVARCHAR(255) NULL,
+		[PREFIX] NVARCHAR(255) NULL,
+		[FIRST_NAME] NVARCHAR(255) NULL,
+		[MIDDLE_NAME] NVARCHAR(255) NULL,
+		[LAST_NAME] NVARCHAR(255) NULL,
+		[SUFFIX] NVARCHAR(255) NULL,
+		[TITLE] NVARCHAR(255) NULL,
+		[PREFERRED_NAME] NVARCHAR(255) NULL,
+		[CREATE_DTTM] DATETIME2 NULL
+	);
+;
+WITH maint_sect_contact AS (
+	SELECT ORGANIZATION_ID,
+		CREATE_DTTM,
+		LEFT(
+			MAINT_SECT_CNTCT_NM,
+			CHARINDEX(';', MAINT_SECT_CNTCT_NM) -1
+		) AS MAINT_SECT_CNTCT_NM,
+		RIGHT(
+			MAINT_SECT_CNTCT_NM,
+			LEN(MAINT_SECT_CNTCT_NM) - CHARINDEX(';', MAINT_SECT_CNTCT_NM)
+		) AS Remainder
+	FROM @maintenance_section
+	WHERE MAINT_SECT_CNTCT_NM IS NOT NULL
+		AND CHARINDEX(';', MAINT_SECT_CNTCT_NM) > 0
+	UNION ALL
+	SELECT ORGANIZATION_ID,
+		CREATE_DTTM,
+		LEFT(Remainder, CHARINDEX(';', Remainder) -1),
+		RIGHT(
+			Remainder,
+			LEN(Remainder) - CHARINDEX(';', Remainder)
+		)
+	FROM maint_sect_contact
+	WHERE Remainder IS NOT NULL
+		AND CHARINDEX(';', Remainder) > 0
+	UNION ALL
+	SELECT ORGANIZATION_ID,
+		CREATE_DTTM,
+		Remainder,
+		null
+	FROM maint_sect_contact
+	WHERE Remainder IS NOT NULL
+		AND CHARINDEX(';', Remainder) = 0
+)
+INSERT INTO @user_person(
+		ORGANIZATION_ID,
+		FIRST_NAME,
+		LAST_NAME,
+		CREATE_DTTM
+	)
+SELECT ORGANIZATION_ID,
+CASE
+		WHEN CHARINDEX(' ', t1.MAINT_SECT_CNTCT_NM) > 0 THEN SUBSTRING(
+			t1.MAINT_SECT_CNTCT_NM,
+			1,
+			LEN(t1.MAINT_SECT_CNTCT_NM) - CHARINDEX(' ', REVERSE(t1.MAINT_SECT_CNTCT_NM))
+		)
+		ELSE ''
+	END,
+CASE
+		WHEN CHARINDEX(' ', t1.MAINT_SECT_CNTCT_NM) > 0 THEN REVERSE(
+			SUBSTRING(
+				REVERSE(t1.MAINT_SECT_CNTCT_NM),
+				1,
+				CHARINDEX(' ', REVERSE(t1.MAINT_SECT_CNTCT_NM)) - 1
+			)
+		)
+		ELSE t1.MAINT_SECT_CNTCT_NM
+	END,
+	CREATE_DTTM
+FROM maint_sect_contact t1;
+UPDATE @user_person
+SET USERNAME = CONCAT (
+		[ORGANIZATION_ID],
+		':',
+		FIRST_NAME,
+		':',
+		MIDDLE_NAME,
+		':',
+		LAST_NAME
+	)
+INSERT INTO USER_PERSON (
+		[USERNAME],
+		[PREFIX],
+		[FIRST_NAME],
+		[MIDDLE_NAME],
+		[LAST_NAME],
+		[SUFFIX],
+		[TITLE],
+		[PREFERRED_NAME]
+	)
+SELECT DISTINCT t1.USERNAME,
+	t1.[PREFIX],
+	t1.[FIRST_NAME],
+	t1.[MIDDLE_NAME],
+	t1.[LAST_NAME],
+	t1.[SUFFIX],
+	t1.[TITLE],
+	t1.[PREFERRED_NAME]
+FROM @user_person t1
+	LEFT JOIN USER_PERSON t2 ON t1.FIRST_NAME = t2.FIRST_NAME
+	AND t1.LAST_NAME = t2.LAST_NAME
+WHERE t2.USER_ID IS NULL;
+
+INSERT INTO ROLE (
+		ORGANIZATION_ID,
+		USER_ID,
+		TYPE,
+		START_DATE
+	)
+SELECT t1.ORGANIZATION_ID,
+	t2.USER_ID,
+	'Maintenance Coordinator',
+	t1.CREATE_DTTM
+FROM @user_person t1
+	INNER JOIN USER_PERSON t2 ON t1.USERNAME = t2.USERNAME
+	LEFT JOIN ROLE t3 ON t1.ORGANIZATION_ID = t3.ORGANIZATION_ID
+	AND t2.USER_ID = t3.USER_ID
+	AND t3.TYPE = 'Maintenance Coordinator'
+	AND CONVERT(CHAR(22), t3.START_DATE, 100) = CONVERT(CHAR(22), t1.CREATE_DTTM, 100)
+WHERE t3.ROLE_ID IS NULL;
+
+SET NOCOUNT OFF;
+END;

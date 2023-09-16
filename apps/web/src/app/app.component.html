@@ -1,0 +1,13 @@
+<app-spinner></app-spinner>
+<header class="bannerContainer"></header>
+
+<mat-sidenav-container class="enclosing-container" [ngStyle]="{'top':bannerHeight}">
+    <mat-sidenav #sidenav mode="side">
+        <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <main class="main_content_container">
+            <router-outlet class="mainContent"></router-outlet>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>

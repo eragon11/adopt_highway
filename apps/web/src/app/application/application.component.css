@@ -1,0 +1,275 @@
+.required:before {
+  content: ' *';
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mtb-10 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.mtb-20 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-field-20 {
+  width: 20%;
+}
+
+.form-field-50 {
+  width: 50%;
+}
+
+.dashed-line {
+  border-top: 1.5px dashed #0052cc;
+  border-bottom: 0;
+  width: 100%;
+}
+
+.solid-line {
+  border-top: 1.5px solid #33b5e5;
+  border-bottom: 0;
+  width: 100%;
+}
+
+.label-16 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.application-form-box {
+  background-color: #fff;
+  margin-left: 5%;
+  width: 90%;
+}
+
+.application-form-box mat-card {
+  padding: 16px 0;
+}
+
+.dateInput {
+  width: 80%;
+  margin-bottom: 13px;
+}
+
+#pickupsStartDate
+  ::ng-deep
+  .mat-form-field-appearance-outline
+  .mat-form-field-infix {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+#agrmtStartDate
+  ::ng-deep
+  .mat-form-field-appearance-outline
+  .mat-form-field-infix {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+#agrmtEndDate
+  ::ng-deep
+  .mat-form-field-appearance-outline
+  .mat-form-field-infix {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+.application-form-box mat-card .header {
+  width: 100%;
+}
+
+.application-form-box mat-card .header .title {
+  padding-left: 70px;
+  color: rgb(0, 0, 0);
+}
+
+.application-form-box .form-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10%;
+  margin-top: 3em;
+  width: 80%;
+}
+
+.application-form-box .form-container button {
+  width: 100px;
+  padding: 4px;
+  border: 1px solid currentColor;
+}
+
+.green-button {
+  width: 100px;
+  padding: 4px;
+  background-color: #f1f1f1;
+}
+
+.green-button:hover {
+  width: 100px;
+  padding: 4px;
+}
+
+.green-button:disabled {
+  width: 100px;
+  padding: 4px;
+  background-color: #fff;
+  color: darkgray;
+}
+
+.application-form-box .form-container mat-from-field {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.application-form-box .form-container .sign-box {
+  background-color: #0052cc;
+  color: white;
+  border-radius: 10px;
+  padding: 20px 20px 30px 20px;
+}
+
+.application-form-box .form-container .sign-box .sign-box-content {
+  margin-top: 25px;
+}
+
+.application-form-box .form-container .sign-box .sign-box-content .label {
+  width: 50px;
+}
+
+.application-form-box .form-container .sign-box .sign-box-content input {
+  height: 40px;
+  width: 50%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.application-form-box
+  .form-container
+  .sign-box
+  .sign-box-content
+  input.ng-touched.ng-invalid {
+  border: 2px solid #f44336;
+}
+
+.sign-box-title {
+  font-size: 1.5rem;
+}
+
+.sign-box-content input {
+  margin-right: 10px;
+}
+
+.sign-box-content .sign-box-hint {
+  color: #ffffff;
+}
+
+.app-toolbar {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: lightgrey;
+  display: flex;
+  justify-content: space-between;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.toolbar-reject-button {
+  border-radius: 30px;
+  background-color: #f1f1f1;
+  margin: 10px 60px 10px 10px;
+  border: 1px solid darkgray;
+}
+.toolbar-accept-button {
+  border-radius: 30px;
+  background-color: #f1f1f1;
+  margin: 10px 10px 10px 10px;
+  border: 1px solid darkgray;
+}
+.toolbar-accept-button:disabled {
+  background-color: #f1f1f1;
+  border: 1px solid darkgray;
+}
+.confirmLabel {
+  background-color: lightgray;
+  font-size: 1.4rem !important;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 20px;
+  text-align: center;
+}
+.updateInfo {
+  font-size: 1.4rem !important;
+  padding: 10px;
+}
+.updateButtonContainer {
+  width: 100%;
+}
+.updateButton {
+  background-color: #f1f1f1;
+  padding: 4px;
+}
+.backButton {
+  margin-left: 3rem;
+  font-size: 20px;
+  font-weight: 500;
+  color: #014b76;
+  cursor: pointer;
+}
+
+.toolbar-accept-button {
+  margin-right: 4rem;
+}
+
+.pageContainer {
+  background-color: lightgray;
+}
+
+.half-width {
+  width: 25%;
+}
+
+input.mat-input-element {
+  color: #000000;
+  font-size: 12pt;
+  font-weight: 400;
+}
+
+textarea.mat-input-element {
+  color: #000000;
+  font-size: 12pt;
+  font-weight: 400;
+}
+
+.submitError {
+  color: hsl(4deg 90% 58%);
+  font-size: 16pt;
+}
+
+.footer {
+  padding-right: 20px;
+  padding-left: 20px;
+  text-align: center;
+}
+
+.disabledField {
+  color: hsl(0deg 52% 50%) !important;
+}

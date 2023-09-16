@@ -1,0 +1,53 @@
+<div class="pageContainer">
+  <div class="table-container">
+    <button class="add-pickup"
+      *ngIf="authRoleType===roleTypes.Administrator || authRoleType===roleTypes.District || authRoleType===roleTypes.Maintenance"
+      mat-mini-fab color="primary" aria-label="Add New Pickup" (click)="openAddPickup()">
+      <mat-icon aria-hidden="true" matTooltip="Add New Pickup" matTooltipClass="tooltip" matTooltipPosition="above">add
+      </mat-icon>
+    </button>
+    <table matSort (matSortChange)="sortData($event)" mat-table [dataSource]="pickupDetails" class="mat-elevation-z8"
+      #pickupsTbSort="matSort">
+
+      <ng-container matColumnDef="Pickup Date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pickup Date</th>
+        <td class="table-row" mat-cell *matCellDef="let element"> {{element.pickupDate}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Pickup Type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pickup Type</th>
+        <td class="table-row" mat-cell *matCellDef="let element"> {{element.type}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Bags Collected">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Bags Collected</th>
+        <td class="table-row" mat-cell *matCellDef="let element"> {{element.numberOfBagsCollected}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Volunteer Count">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Volunteer Count</th>
+        <td class="table-row" mat-cell *matCellDef="let element"> {{element.numberOfVolunteers}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Comments">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span class="comments-tr">Comments</span>
+        </th>
+        <td class="table-row" mat-cell class="comments-ellipsis" *matCellDef="let element"> {{element.comments}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" tabindex="0" (keyup.enter)="openEditPickup(row)"
+        (keyup.space)="openEditPickup(row)" (click)="openEditPickup(row)"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" align="center" [attr.colspan]="displayedColumns.length">
+          No Data Found.
+        </td>
+      </tr>
+    </table>
+  </div>
+  <mat-paginator id="newAgreementPaginator" class="mat-paginator-sticky" [pageSizeOptions]="paginationSizes"
+    [pageSize]="defaultPageSize" (page)="onPaginate($event)" [showFirstLastButtons]="showFirstLastButtons">
+  </mat-paginator>
+</div>

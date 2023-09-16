@@ -1,0 +1,26 @@
+#user-list-header-container {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    position: absolute;
+    left: 1.8%;
+    right: 0px;
+    margin-top: 15px;
+}
+
+/* set flex for the <user-list-header> selector of this component */
+:host {
+    display: flex;
+    justify-content:first baseline;
+    flex-direction: row;
+    width: 50%;
+}
+
+.user-list-header-label {
+    margin-left: 3rem;
+    font-size: 20px;
+    font-weight: 500;
+    color: #3392FF;
+}
+
+

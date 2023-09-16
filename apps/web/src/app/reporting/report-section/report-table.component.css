@@ -1,0 +1,77 @@
+.select {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: hsl(214, 100%, 34%) solid 2px;
+    color: hsl(240, 100%, 50%);
+    padding-right: 1em;
+}
+
+.report_table {
+  width: 100%;
+  overflow: auto;
+  min-width: 50%;
+  background-color: hsl(0, 0%, 100%);
+  max-width: 1920px;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.mat-header-cell {
+    text-align: center;
+}
+
+.mat-header-cell:last-of-type {
+    padding-right: 0% !important;
+}
+
+.mat-form-field {
+    background-color: hsl(0, 0%, 100%);
+    width: 100%;
+}
+
+.report-icons {
+    min-width: 20px;
+}
+
+.report_table {
+    overflow-x: auto;
+}
+
+.floating-btns {
+    display: inline-block !important;
+    margin-right: 10px;
+}
+
+.empty-table {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 5%;
+}
+
+.export-select {
+    border: hsl(214, 100%, 34%) solid 2px;
+    color: hsl(240, 100%, 50%);
+    border-radius: 5px;
+    background: #fff;
+    text-align: left;
+    padding: 10px;
+    margin: 0;
+    position: relative;
+    top: 70px;
+}
+
+.group-by-row {
+    background-color: darkgray;
+}
+
+#download {
+    padding-left: 1em;
+}
+
+#client-table-filter {
+  float: left;
+}

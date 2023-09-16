@@ -1,0 +1,30 @@
+#delete-container {
+    padding: 25px;
+    width: 40vw;
+  }
+  
+  #delete-header-container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  
+  #delete-header {
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+  
+  mat-icon {
+    margin-right: 15px;
+    color: red;
+  }
+  
+  #delete-dialog-buttons {
+    margin: 50px 35px 0 35px;
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+  }
+  
+  

@@ -1,0 +1,8 @@
+<div class="container ada" *ngIf="showPage">
+  <h1>You are not logged in</h1>
+    <p>You do not have a current session on Adopt A Highway. Click
+      <a [routerLink]="['/auth/login']">here</a> to be redirected to the authentication site.
+    </p>
+    <p>Once you have successfully authenticated there, it will automatically redirect you to the Adopt-A-Highway start page.
+    </p>
+</div>

@@ -1,0 +1,30 @@
+export class GroupReportDto {
+    districtName: string;
+    countyName: string;
+    maintenanceOfficeName: string;
+    agreementStartDate: string;
+    agreementEndDate: string;
+    agreementId: number;
+    agreementStatus: string;
+    groupName: string;
+    groupId: number;
+    groupType: string;
+    primaryContactName: string;
+    primaryContactAddress: string;
+    primaryContactCity: string;
+    primaryContactState: string;
+    primaryContactPostalCode: string;
+    primaryContactPhone: string;
+    primaryContactEmail: string;
+    secondaryContactName: string;
+    secondaryContactAddress: string;
+    secondaryContactCity: string;
+    secondaryContactState: string;
+    secondaryContactPostalCode: string;
+    secondaryContactPhone: string;
+    secondaryContactEmail: string;
+    segmentId: string;
+    segmentLength: number;
+    segmentName: string;
+    isSignInstalled: boolean;
+}

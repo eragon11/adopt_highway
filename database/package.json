@@ -1,0 +1,35 @@
+{
+    "name": "db",
+    "version": "0.1.0",
+    "description": "Database",
+    "main": "./src/index.js",
+    "scripts": {
+        "create:db": "node create-database.js",
+        "create:arcgis:local": "node create-arc-gis-segments.js",
+        "create:gis:local": "node create-gis.js",
+        "insert:gis:local": "node insert-gis.js",
+        "drop:create:local": "node drop-create-local.js",
+        "migrate:up:db": "db-migrate up --config ./migrate-database.js",
+        "migrate:legacy:db": "node migrate-legacy.js",
+        "migrate:down": "db-migrate down --config ./migrate-database.js",
+        "sample-data": "db-migrate up:sample-data --silent --config ./migrate-database.js"
+    },
+    "author": "Texas Department of Transportation",
+    "license": "ISC",
+    "dependencies": {
+        "db-migrate": "^0.11.12",
+        "db-migrate-mssql": "npm:@devotis/db-migrate-mssql@^1.1.5",
+        "debug": "^4.3.1",
+        "dotenv": "^8.2.0",
+        "env-cmd": "^10.1.0",
+        "eslint": "^7.23.0",
+        "find-config": "^1.0.0",
+        "moment": "^2.29.4",
+        "momentjs": "^2.0.0",
+        "sqlcmd-runner": "^0.1.1"
+    },
+    "devDependencies": {
+        "@faker-js/faker": "^7.6.0",
+        "@types/find-config": "^1.0.0"
+    }
+}

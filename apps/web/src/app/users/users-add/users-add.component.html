@@ -1,0 +1,194 @@
+<div>
+  <div *ngIf="isEdit && !user || usersAddService.saving" class="loading-div">
+    <mat-spinner mode="indeterminate" diameter="120" strokeWidth="12" aria-label="progress-spinner"></mat-spinner>
+  </div>
+  <main aria-labelledby="user-add-header-container">
+  <form novalidate [formGroup]="userForm" (ngSubmit)="saveUser()">
+
+    <h1 mat-dialog-title *ngIf="!isEdit" aria-label="Add new user">Add New User</h1>
+    <h1 mat-dialog-title *ngIf="isEdit" aria-label="Edit user">Edit User</h1>
+    <div mat-dialog-content>
+      <mat-card id="user-primary-card" *ngIf="isEdit">
+        <div class="user-badge">
+          <span
+            *ngIf="userForm.controls.firstName.value">{{ userForm.controls.firstName.value.substring(0,1).toUpperCase() }}{{ userForm.controls.lastName.value.substring(0,1).toUpperCase() }}</span>
+        </div>
+        <div class="user-primary-info">
+          <div id="user-add-header-container">
+            <mat-card-title class="card-contents" id="user-add-header-fullname">{{ userForm.controls.firstName.value }}
+              {{ userForm.controls.lastName.value }}
+            </mat-card-title>
+            <mat-card-subtitle class="card-contents" id="user-add-tag">{{userForm.controls.userName.value}}
+            </mat-card-subtitle>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="contact-card">
+        <mat-card-title>
+          <h2 mat-dialog-title aria-label="Contact Info">Contact Info</h2>
+        </mat-card-title>
+        <mat-card-content>
+          <div class="user-form">
+            <mat-form-field class="user-field user-required" appearance="outline">
+              <mat-label>First Name</mat-label>
+              <input cdkFocusInitial class="user-input user-required" aria-label="First Name"
+                formControlName="firstName" matInput required>
+              <mat-hint class="required-hint">Required</mat-hint>
+              <mat-error *ngIf="userForm.get('firstName').hasError('required')">Please enter a first name</mat-error>
+            </mat-form-field>
+            <mat-form-field class="user-field user-required" appearance="outline">
+              <mat-label>Last Name</mat-label>
+              <input class="user-input" aria-label="Last Name" formControlName="lastName" matInput required>
+              <mat-hint class="required-hint">Required</mat-hint>
+              <mat-error *ngIf="userForm.get('lastName').hasError('required')">Please enter a last name</mat-error>
+            </mat-form-field>
+            <mat-form-field class="user-field user-required" appearance="outline">
+              <mat-label>Username</mat-label>
+              <input class="user-input" aria-label="Username" formControlName="userName" matInput type="text"
+                maxlength="100" required>
+              <mat-hint class="required-hint">Required</mat-hint>
+              <mat-error *ngIf="userForm.get('userName').invalid">Please enter a valid TxDOT email address</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="user-field" appearance="outline">
+              <mat-label id="status-label">Status</mat-label>
+              <mat-select class="user-input" formControlName="status" aria-labelledby="status-label" [(value)]="defaultUserStatus"
+                (selectionChange)="setStatus($event.value)">
+                <mat-option *ngFor="let status of statusTypes" [value]="status">
+                  {{status}}
+                </mat-option>
+              </mat-select>
+              <mat-hint class="required-hint">Required</mat-hint>
+              <mat-error *ngIf="userForm.get('status').invalid">Please select a status</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field class="user-field do-not-show" appearance="outline">
+              <mat-label>Email</mat-label>
+              <input class="user-input" aria-label="Email" formControlName="email" matInput type="email" required>
+              <mat-hint class="required-hint">Required</mat-hint>
+              <mat-error *ngIf="userForm.get('email').invalid">Please enter a valid email address</mat-error>
+            </mat-form-field>
+            <mat-form-field class="user-field" appearance="outline">
+              <mat-label>Phone number</mat-label>
+              <tel-input formControlName="contactNumber" (keypress)="keyPressNumberOnly($event)" (keyup)="phoneUpdate()" required></tel-input>
+              <mat-hint class="required-hint">Required</mat-hint>
+              <mat-error *ngIf="userForm.get('contactNumber').invalid || !isPhoneValid">Please enter a valid phone
+                number</mat-error>
+            </mat-form-field>
+            <mat-form-field class="user-field" appearance="outline">
+              <mat-label>Address 1</mat-label>
+              <input class="user-input" aria-label="Address 1" formControlName="address1" matInput>
+              <mat-error *ngIf="userForm.get('address1').invalid">Please enter a valid address</mat-error>
+            </mat-form-field>
+            <mat-form-field class="user-field" appearance="outline">
+              <mat-label>Address 2</mat-label>
+              <input class="user-input" aria-label="Address 2" formControlName="address2" matInput>
+            </mat-form-field>
+            <mat-form-field class="user-field" appearance="outline">
+              <mat-label>City</mat-label>
+              <input class="user-input" aria-label="City" formControlName="city" matInput>
+              <mat-error *ngIf="userForm.get('city').invalid">Please enter a valid city</mat-error>
+            </mat-form-field>
+            <mat-form-field class="user-field" appearance="outline">
+              <mat-label>State</mat-label>
+              <input class="user-input" aria-label="State" formControlName="state"
+                oninput="this.value = this.value.toUpperCase()" matInput maxlength="2">
+              <mat-error *ngIf="userForm.get('state').invalid">Please enter a valid two-letter state abbreviation
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="user-field" appearance="outline">
+              <mat-label>Zip Code</mat-label>
+              <input class="user-input" aria-label="Zip Code" formControlName="postalCode" matInput type="text"
+                (keypress)="keyPressNumberOnly($event)" maxlength="5">
+              <mat-error *ngIf="userForm.get('postalCode').invalid">Please enter a valid 5-digit zip code</mat-error>
+            </mat-form-field>
+
+
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+      <mat-card class="roles-card">
+        <mat-card-title>
+          <h2 mat-dialog-title aria-label="Role">Roles</h2>
+        </mat-card-title>
+        <mat-card-content id="roles-card" class="roles-card-content">
+          <div formArrayName="roles">
+
+            <div *ngFor="let role of roleForms.controls; let i=index" [formGroupName]="i">
+              <hr *ngIf="i !== 0" />
+              <mat-card class="role-card">
+                <div class="required-hint role-num">Role {{i+1}}</div>
+                <mat-form-field class="user-field user-required" appearance="outline">
+                  <mat-label id="role-label">Role</mat-label>
+                  <mat-select class="user-input" formControlName="roleType" aria-labelledby="role-label" required
+                    (selectionChange)="updateRoleType($event.value, i)">
+                    <mat-option *ngFor="let role of roleTypes" [value]="role">
+                      {{role}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-hint class="required-hint">Required</mat-hint>
+                  <mat-error *ngIf="userForm.get('roles').at(i).get('roleType').invalid">Please select a valid role
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="user-field user-required" appearance="outline"
+                  *ngIf="roleType && (roleType[i] === 'District Coordinator' || roleType[i] === 'Maintenance Coordinator')">
+                  <mat-label id="district-label">District</mat-label>
+                  <mat-select class="user-input" formControlName="districtNumber" aria-labelledby="district-label" required
+                    (selectionChange)="districtSelectEvent($event.value, i, true)">
+                    <mat-option *ngFor="let district of districtsArray | async" [value]="district.number">
+                      {{district.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-hint class="required-hint">Required</mat-hint>
+                  <mat-error *ngIf="userForm.get('roles').at(i).get('districtNumber').invalid">Please select a district
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="user-field user-required" appearance="outline"
+                  *ngIf="roleType && roleType[i] === 'Maintenance Coordinator'">
+                  <mat-label>Maintenance Office</mat-label>
+                  <mat-select class="user-input" [disabled]="isDistrictEmpty" formControlName="officeNumber"
+                    aria-label="Maintenance Office" required>
+                    <mat-option *ngFor="let maintenance of maintOfficesArray | async" [value]="maintenance.number">
+                      {{maintenance.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-hint class="required-hint">Required</mat-hint>
+                  <mat-error *ngIf="userForm.get('roles').at(i).get('officeNumber').invalid">Please select a maintenance
+                    office</mat-error>
+                </mat-form-field>
+                <button *ngIf="roleForms.controls.length > 1" mat-mini-fab color="warn" aria-label="Delete role"
+                  type="button" (click)="deleteRole(i)" matTooltip="Delete role" matTooltipClass="tooltip"
+                  matTooltipPosition="above">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-card>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-footer>
+          <button mat-mini-fab class="add-role-btn" aria-label="Add role" color="primary" type="button"
+            (click)="addRole()" matTooltip="Add role" matTooltipClass="tooltip" matTooltipPosition="above">
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-card-footer>
+      </mat-card>
+
+    </div>
+
+    <div mat-dialog-actions>
+      <button aria-label="Save new user" mat-raised-button color="primary" type="submit" [disabled]="!formIsValid"
+        matTooltip="Save new user" matTooltipClass="tooltip" matTooltipPosition="above">
+        <mat-icon>save</mat-icon>
+      </button>
+      <button aria-label="Cancel save new user" mat-raised-button color="warn" type="button" (click)="onNoClick()"
+        matTooltip="Cancel" matTooltipClass="tooltip" matTooltipPosition="above">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </form>
+</main>
+</div>

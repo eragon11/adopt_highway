@@ -1,0 +1,191 @@
+<!-- TODO: during manual accessibilty testing, verify that this is the best location for adding level-one header to map view -->
+<h1 aria-label="Main" style="display: none;"></h1>
+<div id="custom_header" role="navigation" class="flex-container" aria-label="Main">
+  <div id="wrapper1" class="flex-container">
+    <button (click)="toggleNav()" title="Open Side Menu" tabindex="0">
+      <img [src]="env.map_banner_sidenavHamburger_white" id="sidenavImg" class="headerImgs" alt="Open/Close Side Menu">
+    </button>
+    <button (click)="enableCreateSegment()" disableIfNotAuthorized resource="AddSegment" action="create"
+      title="Manage Adopt A Highway Segments" title="Create a new segment" tabindex="0">
+      <img [src]="env.segmentEditImg" class="headerImgs" id="addSegmentImg" alt="Create Adopt A Highway segment">
+    </button>
+  </div>
+  <div id="wrapper2" class="flex-container">
+    <div role="search" id="searchDiv" style="font-weight: bold;" aria-label="Search the map" tabindex="0"></div>
+    <button (click)="enableLegend()" title="View map legend" tabindex="0">
+      <img [src]="env.layersImg" class="headerImgs" id="layerImg" alt="View map legend">
+    </button>
+  </div>
+</div>
+
+
+<div role="region" id="layerDiv" [style.visibility]="legendVisibility"></div>
+
+<div id="loading-container-edit" style="display:none;">
+  <div id="loading-overlay-edit"></div>
+  <mat-progress-spinner mode="indeterminate" diameter="120" strokeWidth="12" id="loading-spinner-edit"
+    aria-label="progress-spinner"></mat-progress-spinner>
+  <div id="loading-message-edit">Loading</div>
+</div>
+
+<!-- TODO: determine how to inform the user that they are in the map frame, without putting it in a tabindex focus -->
+<div role="application" id="viewDiv"></div>
+
+<nav id="filterDiv">
+  <div role="presentation" id="drop-downs" class="loadSpinner">
+    <select name="select-district" id="district" disableIfNotAuthorized resource="areaFilter_District" action="update"
+      aria-label="Select District"
+      (input)="filterDropdown.filterSelectedEvent(env.districtAbbreviatedFieldName, $event)">
+      <option value={{env.districtSelectBoxInitialVal}}>{{env.districtSelectBoxInitialVal}}</option>
+    </select>
+    <select name="select-county" id="county" disableIfNotAuthorized resource="areaFilter_County" action="update"
+      aria-label="Select County" (input)="filterDropdown.filterSelectedEvent(env.countyCountyFieldName, $event)">
+      <option value={{env.countySelectBoxInitialVal}}>{{env.countySelectBoxInitialVal}}</option>
+    </select>
+    <select name="select-route" id="route" disableIfNotAuthorized resource="areaFilter_Route" action="update"
+      aria-label="Select Route" (input)="filterDropdown.filterSelectedEvent(env.routeFeatureSrvName, $event)">
+      <option value={{env.routeSelectBoxInitialVal}}>{{env.routeSelectBoxInitialVal}}</option>
+    </select>
+  </div>
+</nav>
+
+<div role="region" aria-label="Map measurement tool" id="measurementDiv" class="esri-component esri-widget">
+  <button id="distance" class="esri-widget--button esri-interactive esri-icon-measure-line"
+    title="Distance Measurement Tool" alt="Meapsure map distance"></button>
+  <button id="clearDistance" class="esri-widget--button esri-interactive esri-icon-trash" title="Clear Measurements"
+    alt="Clear map distance"></button>
+</div>
+
+<!-- TODO: Known WCAG issue where Esri map control widgets create nested elements that do not have roles associated,
+    meaning that screen readers will not know to stop and inform users that they can take an action.  Due to maps
+    being inherently reliant on sight, this is most likely a mute point. But will still generate auto-ARIA errors -->
+<div role="button" aria-label="Map zoom in/out" id="zoomDiv"></div>
+
+<div role="region" aria-label="Zoom to location or state of texas" id="homeLocateBtns">
+  <div role="button" aria-label="Zoom to State of Texas" id="homeDiv"></div>
+  <div role="button" aria-label="Zoom to location" id="locateDiv"></div>
+</div>
+
+<div role="region" id="editorDiv" [style.visibility]="editorVisibility"></div>
+<!-- TODO: determine what the editor div doing?  -->
+
+
+<div *ngIf="view" class="segmentStatuses loadSpinner" id='segmentStatusCheckBox'>
+  <mat-selection-list class="statusList" #statusList [(ngModel)]="checkedStatus"
+    (selectionChange)="filterDropdown.checkedStatuses(statusList.selectedOptions.selected)"
+    (ngModelChange)="filterCheckbox.filterCheckedEvent(env.segmentStatusFieldName, $event)">
+    <mat-list-option checkboxPosition="before" color="primary" disableRipple="true"
+      *ngFor="let status of segmentStatus.statuses" [value]="status.value" selected="status.checked">
+      <div className="{{ status.class }}"><span>{{ status.label }}</span></div>
+    </mat-list-option>
+  </mat-selection-list>
+</div>
+
+<!-- Inform the user if they are editing/creating outside the DO/MO -->
+<div id="errorUserModal" class="userModal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p><strong>Warning:&nbsp;</strong>&nbsp;You can not edit an AAH segment outside of your region. Please correct this
+      before proceeding.</p>
+  </div>
+</div>
+
+<!-- Create/Update segment modal forms -->
+<div role="dialog" id="createWidget" class="esri-widget esri-hidden" tabindex="0">
+  <!-- TODO: this needs to be described/labeled in some way - aria-labelledby or aria-description? -->
+
+  <!-- <button *ngIf="createSegmentService.state==='drawn'" type="button" class="esri-button" value="Create Segment" id="btnCreate" tabindex="0">Create Segment</button> -->
+  <h1 class="esri-widget__heading instructions-heading">Create a Segment</h1>
+  <!-- <h2 class="esri-widget__heading instructions-heading">Instructions</h2> -->
+  <span *ngIf="createSegmentService.drawState==='open'">
+    <div>
+      <ul class="instructions">
+        <li>Select a highlighted road for the new segment</li>
+      </ul>
+    </div>
+  </span>
+  <span *ngIf="createSegmentService.drawState==='selected'">
+    <ul class="instructions">
+      <li>Drag your mouse along the road to draw a new segment</li>
+      <li>Double-click anywhere on the map to complete</li>
+      <li>Approximate segment length: <b>{{createSegmentService.sketchLength.toFixed(1)}} miles</b></li>
+    </ul>
+  </span>
+  <span *ngIf="createSegmentService.drawState==='drawn'">
+    <ul class="instructions">
+      <li>Segment length:
+        <b>{{createSegmentService.finalLength.toFixed(1)}} miles</b></li>
+    </ul>
+  </span>
+  <div id="create" class="scroller esri-component" tabindex="0"></div>
+
+  <button *ngIf="createSegmentService.drawState==='drawn'" (click)="createSegmentService.submitSegmentClick()" type="button"
+    class="esri-button" value="Create Segment" id="btnCreate" tabindex="0">Create Segment</button>
+  <button (click)="createSegmentService.cancelSegment()" type="button" class="esri-button" value="Cancel"
+    id="btnCreateCancel">Cancel</button>
+</div>
+
+<!-- Update segment modal form -->
+<div role="dialog" id="updateWidget" class="esri-widget esri-hidden" tabindex="0">
+
+  <h1 class="esri-widget__heading instructions-heading">Update a Segment</h1>
+  <!-- <h2 class="esri-widget__heading instructions-heading">Instructions</h2> -->
+  <span *ngIf="updateSegmentService.drawState==='select'">
+    <ul class="instructions">
+      <li>Multiple roadways were found</li>
+      <li>Select the highlighted road for the updated segment</li>
+    </ul>
+  </span>
+  <span *ngIf="updateSegmentService.drawState==='selected'">
+    <ul class="instructions">
+      <li>Click on the segment to modify its length</li>
+      <li>Double-click anywhere on the map to complete</li>
+      <li>Edit the form to update segment values</li>
+      <li>Approximate segment length: <b>{{updateSegmentService.sketchLength.toFixed(1)}} miles</b></li>
+    </ul>
+  </span>
+  <span *ngIf="updateSegmentService.drawState==='drawn'">
+    <ul class="instructions">
+      <li>Segment length:
+        <b>{{updateSegmentService.finalLength.toFixed(1)}} miles</b></li>
+    </ul>
+  </span>
+  <div id="update" class="scroller esri-component" tabindex="0"></div>
+
+  <button *ngIf="updateSegmentService.drawState==='drawn' || updateSegmentService.drawState==='open'" (click)="updateSegmentService.submitUpdate()" type="button" class="esri-button" value="Update Segment"
+    id="btnUpdate" tabindex="0">Update Segment</button>
+  <button (click)="updateSegmentService.cancelUpdate()" type="button" class="esri-button" value="Cancel"
+    id="btnUpdateCancel" tabindex="0">Cancel</button>
+</div>
+
+<!-- Update agreement, group, pickup and sign modal forms - not currently implemented -->
+<div role="region" id="agreement" class="map-featureform esri-widget esri-hidden">
+  <label for="btnUpdateAgreement"></label>
+  <input type="button" class="esri-button" value="Update Agreement" id="btnUpdateAgreement" />
+  <span></span>
+  <label for="btnAgreementCancel"></label>
+  <input type="button" class="esri-button" value="Cancel" id="btnAgreementCancel" />
+</div>
+<div role="region" id="group" class="map-featureform esri-widget esri-hidden">
+  <label for="btnUpdateGroup"></label>
+  <input type="button" class="esri-button" value="Update Group" id="btnUpdateGroup" />
+  <span></span>
+  <label for="btnGroupCancel"></label>
+  <input type="button" class="esri-button" value="Cancel" id="btnGroupCancel" />
+</div>
+<div role="region" id="pickup" class="map-featureform esri-widget esri-hidden">
+  <label for="btnUpdatePickup"></label>
+  <input type="button" class="esri-button" value="Update Pickup" id="btnUpdatePickup" />
+  <span></span>
+  <label for="btnPickupCancel"></label>
+  <input type="button" class="esri-button" value="Cancel" id="btnPickupCancel" />
+</div>
+<div role="region" id="sign" class="map-featureform esri-widget esri-hidden">
+  <label for="btnUpdateSign"></label>
+  <input type="button" class="esri-button" value="Update Sign" id="btnUpdateSign" />
+  <span></span>
+  <label for="btnSignCancel"></label>
+  <input type="button" class="esri-button" value="Cancel" id="btnSignCancel" />
+</div>
+

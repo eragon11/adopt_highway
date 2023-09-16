@@ -1,0 +1,20 @@
+<div class="select">
+  <mat-form-field *ngIf="user && user.roles.length > 1" >
+    <mat-label style="color:hsl(0, 0%, 100%);">Select Role</mat-label>
+    <mat-select panelClass="roleDropDown" (selectionChange)="setRole($event);" required>
+      <ng-container *ngFor="let roleselect of user.roles">
+        <mat-option value="{{roleselect.id}}" [selected]="roleselect.id == user.selectedRole">
+          <ng-container>
+            {{roleselect.type}}
+          </ng-container>
+          <ng-container *ngIf="roleselect.type == roletype.District">
+            - {{roleselect.organization.district.name}}
+          </ng-container>
+          <ng-container *ngIf="roleselect.type == roletype.Maintenance">
+            - {{roleselect.organization.maintenanceSection.name}}
+          </ng-container>
+        </mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+</div>

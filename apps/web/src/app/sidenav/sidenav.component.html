@@ -1,0 +1,119 @@
+<div id="mySidenav" class="sideNavContainer" >
+  <div class="userPane" *ngIf="user">
+      <div id="userSideNav">Welcome {{ user.userName }} </div>
+      <div id='roleSideNav'>{{currentRole}}</div>
+  </div>
+
+  <div class="roleSelector" alt="Select a user role">
+      <app-roleselector></app-roleselector>
+  </div>
+
+  <!-- TODO: ADA Compliance: all nav links need to be keyboard accessible - explore using Angular directives
+      https://www.bennadel.com/blog/3633-giving-click-anchor-links-tab-access-using-a-directive-in-angular-7-2-15.htm-->
+  <a
+    id="menuMap"
+    *ngIf="env.showMap"
+    disableIfNotAuthorized
+    resource="map"
+    action="read"
+    routerLink="/map"
+    #mapActive="routerLinkActive"
+    routerLinkActive="activeSidebarNav"
+    [routerLinkActiveOptions]="{exact: true}"
+    class="sidebarNav"
+    tabindex="0"
+    (click)="sidebarNavMenuClicked($event)">
+    <mat-icon class="sidenavImgs material-icons-outlined" alt="Click to access map">map</mat-icon>
+    <p id="menuMap__text">Map</p>
+  </a>
+
+  <a
+    id="menuReports"
+    *ngIf="env.showReporting"
+    disableIfNotAuthorized
+    resource="reports"
+    action="read"
+    routerLink="/report"
+    #reportsActive="routerLinkActive"
+    routerLinkActive="activeSidebarNav"
+    [routerLinkActiveOptions]="{exact: true}"
+    class="sidebarNav"
+    tabindex="0"
+    (click)="sidebarNavMenuClicked($event)">
+    <mat-icon  class="sidenavImgs" alt="Click to access reports">insert_chart_outlined</mat-icon>
+    <p id="menuReports__text">Reports</p>
+  </a>
+  <a id="agreements"
+  *ngIf="env.showAgreements"
+  disableIfNotAuthorized
+  resource="agreements"
+  action="read"
+  #agreementsActive="routerLinkActive"
+  routerLinkActive="activeSidebarNav"
+  [routerLinkActiveOptions]="{exact: true}"
+    class="sidebarNav"
+    tabindex="0"
+    (click)="agreementMainMenuClicked()">
+    <mat-icon *ngIf="!agreementsActive.isActive" class="subSidenavImgs material-icons-outlined">article</mat-icon>
+    <p id="agreements__text">Agreements</p>
+  </a>
+  <a
+    id="newAgreement"
+    *ngIf="env.showAgreements && showAgreementsSubMenu"
+    disableIfNotAuthorized
+    resource="agreements"
+    action="read"
+    routerLink="/agreements/newAgreements"
+    #newAgreementActive="routerLinkActive"
+    routerLinkActive="activeSubSidebarNav"
+    [routerLinkActiveOptions]="{exact: true}"
+    class="subSidebarNav"
+    tabindex="0"
+    (click)="sidebarNavMenuClicked($event)">
+    <mat-icon *ngIf="!newAgreementActive.isActive" class="subSidenavImgs">chevron_right</mat-icon>
+    <mat-icon *ngIf="newAgreementActive.isActive" class="subSidenavImgs">expand_more</mat-icon>
+    <p id="newAgreements_text">New Agreements</p>
+  </a>
+  <a
+    id="activeAgreements"
+    *ngIf="env.showAgreements && showAgreementsSubMenu"
+    disableIfNotAuthorized
+    resource="agreements"
+    action="read"
+    routerLink="/agreements/activeAgreements"
+    #activeAgreementsActive="routerLinkActive"
+    routerLinkActive="activeSubSidebarNav"
+    [routerLinkActiveOptions]="{exact: true}"
+    class="subSidebarNav"
+    tabindex="0"
+    (click)="sidebarNavMenuClicked($event)">
+    <mat-icon *ngIf="!activeAgreementsActive.isActive" class="subSidenavImgs">chevron_right</mat-icon>
+    <mat-icon *ngIf="activeAgreementsActive.isActive" class="subSidenavImgs">expand_more</mat-icon>
+    <p id="activeAgreements_text">Active Agreements</p>
+  </a>
+  <a id="menuUsers"
+    *ngIf="env.showUserManagement"
+    disableIfNotAuthorized
+    resource="users"
+    action="read"
+    routerLink="/users/list-users"
+    #menuUsersActive="routerLinkActive"
+    routerLinkActive="activeSidebarNav"
+    [routerLinkActiveOptions]="{exact: true}"
+    class="sidebarNav"
+    tabindex="0"
+    (click)="sidebarNavMenuClicked($event)">
+      <mat-icon  class="sidenavImgs material-icons-outlined" >account_circle</mat-icon>
+    <p id="menuUsers__text">User Management</p>
+  </a>
+
+  <a id="menuLogout" (click)="logout()" tabindex="0" class="sidebarNav">
+    <mat-icon class="sidenavImgs material-icons-outlined" alt="Click to logout">logout</mat-icon>
+      <p id="menuLogout__text">Logout</p>
+  </a>
+
+  <div id="copyright">
+    <img [src]="env.dashboard_sidenav_copyright_white" id="copyright__img" class="sidenavImgs" alt="Texas Department of Transportation copyright" />
+    <p id="copyright__text">TxDOT All rights reserved<br />version: {{aahVersion}}</p>
+</div>
+</div>

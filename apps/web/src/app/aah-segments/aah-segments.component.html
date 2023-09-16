@@ -1,0 +1,37 @@
+
+
+<br>
+<br>
+<br>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Route</th>
+        <th>Status</th>
+        <th>Length</th>
+        <th>District</th>
+        <th>County</th>
+        <th>Location</th>
+        <th>Maintenance
+            Office
+        </th>
+        <th>Office Number</th>
+        <th>Description</th>
+        <th>Group Name</th>
+    </tr>
+    <tr *ngFor="let segment of segments">
+        <td>{{ segment.id}}</td>
+        <td>{{ segment.routeName}}</td>
+        <td>{{ segment.segmentStatus}}</td>
+        <td>{{ segment.roadSegmentLength}}</td>
+        <td>{{ segment.district}}</td>
+        <td>{{ segment.county}}</td>
+        <td>{{ segment.location}}</td>
+        <td>{{ segment.maintenanceOffice}}</td>
+        <td>{{ segment.maintenanceOfficeNumber}}</td>
+        <td>{{ segment.fromToDescription}}</td>
+        <td>{{ segment.groupName}}</td>
+    </tr>
+
+</table>

@@ -1,0 +1,23 @@
+<div id="custom_header" role="navigation" class="flex-container" aria-label="Main">
+  <div id="wrapper1" class="flex-container">
+      <app-sidenav-toggle></app-sidenav-toggle>
+  </div>
+</div>
+<div class="container ada" *ngIf="!data">
+  <h1>Volunteer is not authenticated</h1>
+  <p>
+    Cannot locate your user record
+  </p>
+</div>
+<div class="container ada" *ngIf="data">
+  <h1>Volunteer authenticated</h1>
+  <p>
+    You have been successfully authenticated.
+  </p>
+
+  <mat-list>
+    <mat-list-item><b>user name:</b>&nbsp;{{ data.userName }}</mat-list-item>
+    <mat-list-item><b>first name:</b>&nbsp;{{ data.firstName }}</mat-list-item>
+    <mat-list-item><b>last name:</b>&nbsp;{{ data.lastName }}</mat-list-item>
+   </mat-list>
+</div>

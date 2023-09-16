@@ -1,0 +1,1 @@
+export * from './userjoinedvaluetype.entity';

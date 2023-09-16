@@ -1,0 +1,71 @@
+/* Application-wide Styles */
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  color: hsl(210, 50%, 40%);
+  font-size: 250%;
+  text-align: center;
+}
+
+h2,
+h3 {
+  color: hsl(0, 0%, 27%);
+  font-weight: lighter;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.bannerContainer {
+    height: 125px!important;
+}
+
+.main_content_container {
+  /* background-color: hsl(212, 100%, 24%); */
+}
+
+.sidebar {
+  flex: 1;
+  background-color: hsl(212, 100%, 24%);
+  min-width: 200px;
+  flex-flow: row;
+}
+
+.mainContent {
+  flex: 3;
+}
+
+::ng-deep .ada {
+  line-height: 1.5;
+}
+
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.esri-editor .esri-item-list__scroller {
+  max-height: 350px;
+}
+
+.mat-drawer-container {
+  background-color: white;
+  overflow: hidden !important;
+}
+
+.enclosing-container {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: hsl(212, 100%, 24%);
+}

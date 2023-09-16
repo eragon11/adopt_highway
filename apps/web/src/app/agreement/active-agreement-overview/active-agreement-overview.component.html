@@ -1,0 +1,230 @@
+<nav aria-label="Main" role="navigation">
+  <div id="custom_header" role="navigation" class="flex-container" aria-label="Main">
+    <div id="wrapper1" class="flex-container">
+      <app-sidenav-toggle></app-sidenav-toggle>
+    </div>
+  </div>
+</nav>
+<main role="main">
+  <div class="spinnerContainer" align="center" *ngIf="!isDataLoaded">
+    <mat-progress-spinner [color]="primary" [mode]="mode">
+    </mat-progress-spinner>
+  </div>
+  <div class="pageContainer" *ngIf="isDataLoaded">
+    <section>
+      <mat-toolbar class="app-toolbar">
+        <button mat-button class="backButton" (click)="backToActiveAgreements()" tabindex="0"
+          (keyup.enter)="backToActiveAgreements()" (keyup.space)="backToActiveAgreements()">
+          < Active Agreements</button> <span class="spacer"></span>
+      </mat-toolbar>
+      <form class="application-form-box" fxLayout="column">
+        <mat-card>
+          <div fxLayout="column">
+            <h2 class="group-name-title">{{agreementDetails?.groupName}}</h2>
+
+            <mat-tab-group mat-align-tabs="center" class="tabContainer">
+              <mat-tab label="Agreement Information">
+                <div fxLayout="column" fxLayoutAlign="none stretch" fxLayoutGap="10px" fxLayout.xl="row"
+                  fxLayout.lg="row">
+                  <div fxFlex="50" class="control-container">
+                    <h3>Agreement Information</h3>
+                    <div class="grid-container">
+
+                      <div class="grid-item property-label">
+                        <mat-label>Start Date</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.startDate}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>End Date</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.endDate}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Up for renewal</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.renewalDate}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Number of pickups/year</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.pickupsPerYear}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Total pickups</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.totalPickups}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Remaining pickups</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.remainingPickups}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Pickup schedule dates</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>
+                          {{agreementDetails?.pickupScheduledDates?.length > 0?agreementDetails?.pickupScheduledDates:'None'}}
+                        </mat-label>
+                      </div>
+                      <!-- TODO -->
+                      <!-- <div class="grid-item property-label">
+                        <mat-label>Next scheduled pickup</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.DON;t KNOW}}</mat-label>
+                      </div> -->
+                      <div class="grid-item property-label">
+                        <mat-label>Segment Name</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.segmentName}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Segment Length</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.segmentLength}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>District</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.districtName}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>District Coordinator</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.districtCoordinatorName}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Maintainance Coordinators</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>
+                          {{agreementDetails?.maintenanceCoordinatorNames?.length > 0?agreementDetails?.maintenanceCoordinatorNames:'None'}}
+                        </mat-label>
+                      </div>
+                    </div>
+                  </div>
+                  <div fxFlex="50" class="control-container">
+                    <h3>Group Information</h3>
+                    <div class="grid-container">
+                      <div class="grid-item">
+                        <h4>Group Details</h4>
+                      </div>
+                      <div class="grid-item"></div>
+                      <div class="grid-item property-label">
+                        <mat-label>Group Name</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.groupName}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Number of Volunteers</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.groupNumberOfVolunteers}}</mat-label>
+                      </div>
+
+                      <div class="grid-item">
+                        <h4>Primary Contact</h4>
+                      </div>
+                      <div class="grid-item"></div>
+                      <div class="grid-item property-label">
+                        <mat-label>Contact Name</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.primaryContactName}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Contact Email</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.primaryContactEmail}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Contact Number</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.primaryContactPhoneNumber}}</mat-label>
+                      </div>
+
+                      <div class="grid-item">
+                        <h4>Alternative Contact</h4>
+                      </div>
+                      <div class="grid-item"></div>
+                      <div class="grid-item property-label">
+                        <mat-label>Alternative Contact Name</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.alternateContactName}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Alternative Contact Email</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.alternateContactEmail}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Alternative Contact Number</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.alternateContactPhoneNumber}}</mat-label>
+                      </div>
+
+
+                      <div class="grid-item">
+                        <h4>Sign Name</h4>
+                      </div>
+                      <div class="grid-item"></div>
+                      <div class="grid-item property-label">
+                        <mat-label>Sign Line 1</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.signLine1}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Sign Line 2</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.signLine2}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Sign Line 3</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.signLine3}}</mat-label>
+                      </div>
+                      <div class="grid-item property-label">
+                        <mat-label>Sign Line 4</mat-label>
+                      </div>
+                      <div class="grid-item">
+                        <mat-label>{{agreementDetails?.signLine4}}</mat-label>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="Pickups">
+                <app-pickups [agreementId]="activeAgreementId"></app-pickups>
+              </mat-tab>
+            </mat-tab-group>
+
+          </div>
+
+        </mat-card>
+      </form>
+    </section>
+  </div>
+</main>

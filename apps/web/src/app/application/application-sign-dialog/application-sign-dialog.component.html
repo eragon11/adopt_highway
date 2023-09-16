@@ -1,0 +1,10 @@
+<div mat-dialog-title></div>
+<div mat-dialog-content class="request-content">
+  The Application for {{data.groupName}} will be moved from New Agreement to Active Agreement. Do
+  you wish to continue?
+</div>
+<div mat-dialog-actions>
+  <button aria-label="ok" mat-raised-button color="primary" (click)="sendCreateSigningRequest()"
+    [mat-dialog-close]="'Request Sent'">OK</button>
+  <button aria-label="Cancel" mat-raised-button color="warn" mat-dialog-close (click)="onNoClick()">Cancel</button>
+</div>

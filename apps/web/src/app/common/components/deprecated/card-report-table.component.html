@@ -1,0 +1,51 @@
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ WIP - CURRENTLY NOT UTILIZED IN THE APPLICATION - AH-596 refactored this code and removed the dependency for the
+USER listing page
+
+TODO: If needed for other elements of the app, and can be truly modular reuse, otherwise deem it deprecated and delete
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<!-- Cards -->
+<div class="card-layout">
+  <div *ngIf="isDataReturned; else noResults">
+   <!-- Would like to make this a ngTemplate so the rest of the html can be
+    reused and you would only have to supply the mat-cards portions of the template in a directive-->
+    <div class="card-layout-container">
+      <div *ngFor="let data of tableDataSource">
+          <mat-card (click)="navigateToRecord(data, $event)">
+              <mat-card-content>
+                <div class="card-badge-container">
+                  <div class="card-badge"  [style.background-color]="data.color">
+                    <div>{{ data.firstName.substring(0,1).toUpperCase() }}{{ data.lastName.substring(0,1).toUpperCase() }}</div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <mat-card-title class="card-styles card-full-name">{{ data.firstName }} {{ data.lastName }}</mat-card-title>
+                  <div class="card-styles card-username">@{{data.userName}}</div>
+                  <div class="card-styles card-role">{{ data.roles[0].type }}</div>
+                  <mat-card-subtitle class="card-status" [ngStyle]="data.status === 'Active' && { 'color': 'hsl(120, 85%, 39%);', 'font-style': 'normal'} ">{{ data.status }}</mat-card-subtitle>
+                </div>
+              </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+  </div>
+
+  <div>
+    <ng-template #noResults>
+      <div class="no-results-returned">No users found.</div>
+    </ng-template>
+  </div>
+
+  <!-- Pagination -->
+  <mat-paginator
+    id="user-list-paginator"
+    class="mat-paginator-sticky"
+    *ngIf="isPageable"
+    [pageSizeOptions]="paginationSizes"
+    [pageSize]= "defaultUsersPageSize"
+    (page)="onPaginate($event)"
+    [length]="length"
+    [showFirstLastButtons]="showFirstLastButtons">
+  </mat-paginator>
+</div>

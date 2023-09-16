@@ -1,0 +1,27 @@
+<nav aria-label="Main" role="navigation">
+    <div id="custom_header" role="navigation" class="flex-container" aria-label="Main">
+        <div id="wrapper1" class="flex-container">
+            <app-sidenav-toggle></app-sidenav-toggle>
+        </div>
+    </div>
+</nav>
+<main role="main">
+    <div id="reportingPage" class="reporting_container">
+        <h1 aria-label="Main" style="display: none;"></h1>
+
+        <div id="reportingHeader" class="headerFooter">
+            <app-header></app-header>
+        </div>
+        <div id="reportingLinks" class="reportingMain">
+            <app-report-icons></app-report-icons>
+        </div>
+        <div id="reportingReport" class="reportingMain">
+            <ng-container *ngIf="showInitialMsg">
+                <h2 class="announcement">
+                    Please select a report
+                </h2>
+            </ng-container>
+            <ng-template rptHost class="table"></ng-template>
+        </div>
+    </div>
+</main>

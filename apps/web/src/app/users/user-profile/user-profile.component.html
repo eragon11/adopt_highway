@@ -1,0 +1,67 @@
+
+<div id="user-profile-header-container" (click)="navigateToUserManagement()">
+  <mat-icon>keyboard_arrow_left</mat-icon>
+  <span class="user-profile-back-nav-label" tabindex="0" (keyup.enter)="navigateToUserManagement()" (keyup.space)="navigateToUserManagement()">User Management</span>
+</div>
+<div *ngIf="user" id="user-profile-container">
+  <mat-card class="user-card">
+    <mat-card-content>
+      <div id="user-primary-container">
+        <div class="user-badge">
+          <span>{{ user.firstName.substring(0,1).toUpperCase() }}{{ user.lastName.substring(0,1).toUpperCase() }}</span>
+        </div>
+        <div class="user-primary-info">
+          <div id="user-header-container">
+            <mat-card-title class="card-contents" id="user-header-fullname">{{ user.firstName }} {{ user.lastName }}</mat-card-title>
+            <mat-card-subtitle class="card-contents" id="user-tag">{{user.userName}}</mat-card-subtitle>
+          </div>
+          <div id="user-role-container">
+            <div class="card-contents user-label-2" id="user-role"><mat-icon class="user-icon">person</mat-icon>{{ user.roles[0].type }}</div>
+          </div>
+          <div id="user-status-container">
+            <div [ngStyle]="user.status === 'Active' && { 'color': 'hsl(120, 60%, 30%);'} " class="card-contents" id="user-status"><mat-icon class="user-icon" >person_pin</mat-icon>{{ user.status }}
+            </div>
+            <div *ngIf="user.lastLogin; else noLogin" class="card-contents" id="user-last-login">Last seen: {{ user.lastLogin | date:'MMM d, y' }}</div>
+            <ng-template #noLogin class="card-contents" id="user-label-nodata" style="font-style: italic;">
+              <div class="user-label-nodata">Login info unavailable</div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="autRoleType==='Administrator'" class="user-manage-container">
+        <div class="user-manage-content">
+          <div id="user-edit-container" (keyup.enter)="openEditDialog()" (keyup.space)="openEditDialog()" (click)="openEditDialog()" tabindex="0">
+            <span class="user-label-2">Edit User</span>
+            <div class="card-contents user-label-2"><mat-icon class="user-icon" id="user-edit-icon">edit</mat-icon></div>
+          </div>
+          <div id="user-delete-container" (keyup.enter)="softDeleteUser($event)" (keyup.space)="softDeleteUser($event)" (click)="softDeleteUser($event)" tabindex="0">
+            <span class="user-label-2">Delete User</span>
+            <div class="card-contents user-label-2" id="user-delete-icon"><mat-icon class="user-icon" aria-label="Delete user icon" alt="Delete user icon">delete</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="user-details-content">
+        <div *ngIf="!this.noRegion">
+          <div class="user-details user-label-2" id="user-region"><mat-icon class="user-icon" aria-label="User region icon" alt="User region icon">place</mat-icon>{{ isDistrictCoordinator ? 'District' : 'Maintenance Office' }}</div>
+          <div *ngIf="isDistrictCoordinator" class="user-details user-label-3"> {{ districtName }} </div>
+          <div *ngIf="isMaintenanceCoordinator" class="user-details user-label-3"> {{ maintOfficeName }} </div>
+        </div>
+        <div>
+          <div class="user-details user-label-2" id="user-email"><mat-icon class="user-icon" aria-label="User email icon" alt="User email icon">email</mat-icon>Email</div>
+          <div *ngIf="user.emails[0] && user.emails[0]?.value; else noEmail" class="user-details user-label-3"> {{ user.emails[0].value }} </div>
+          <ng-template #noEmail>
+            <div class="user-details user-label-nodata">Unavailable</div>
+          </ng-template>
+        </div>
+        <div>
+          <div class="user-details user-label-2" id="user-phone"><mat-icon class="user-icon" aria-label="User contact icon" alt="User contact icon">phone</mat-icon>Contact</div>
+          <div *ngIf="user.phones[0] && user.phones[0]?.value; else noPhone" class="user-details user-label-3"> {{ user.phones[0].value  }}</div>
+          <ng-template #noPhone>
+            <div class="user-details user-label-nodata">Unavailable</div>
+          </ng-template>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

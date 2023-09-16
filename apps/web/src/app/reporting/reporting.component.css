@@ -1,0 +1,148 @@
+
+html, body {
+  max-width: 75rem;
+  margin: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.announcement {
+  color: white;
+  width: 100% !important;
+  text-align: center;
+}
+
+.headerFooter {
+  min-height: 2em;
+}
+
+.reporting_container > * {
+    border-left: 1px solid hsl(0, 0%, 0%);
+    border-right: 1px solid hsl(0, 0%, 0%);
+    border-top: 1px solid hsl(0, 0%, 0%);
+}
+
+#reportingHeader {
+  background-color:hsl(43, 20%, 93%) ;
+  max-width: 1920px;
+}
+
+#reportingLinks {
+  max-width: 1920px;
+}
+
+:host ::ng-deep .mat-table {
+  overflow: auto;
+  max-width: 1920px;
+  max-height: calc(100vh - 155px);
+}
+
+/* TODO: this should be deprecated - here to patch styling issue with material dropdowns */
+:host ::ng-deep .mat-paginator {
+  background-color: white;
+  color: black ;
+}
+
+:host ::ng-deep .mat-paginator-sticky {
+  bottom: 0px;
+  position: sticky;
+  z-index: 10;
+  max-width: 1920px;
+}
+
+:host ::ng-deep .mat-header-row {
+    width: 100%;
+}
+
+:host ::ng-deep .mat-sort-header-content {
+  text-align: left;
+}
+
+:host ::ng-deep .mat-row {
+  width: 100%;
+}
+
+:host ::ng-deep .mat-header-cell {
+  padding: 0 10px 5px 10px;
+}
+
+:host ::ng-deep td.mat-cell {
+  min-width: 50px;
+  max-width: 200px;
+  padding: 5px 10px;
+}
+
+::ng-deep .mat-select-value, .mat-select-value-text {
+  color: hsl(0, 0%, 0%);
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .mat-column-Group-Name,
+::ng-deep .mat-column-Primary-Contact-Address,
+::ng-deep .mat-column-Secondary-Contact-Address,
+::ng-deep .mat-column-Sign-Name {
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  min-width: 200px !important;
+}
+
+::ng-deep .mat-column-Primary-Contact-Name,
+::ng-deep .mat-column-Secondary-Contact-Name {
+  white-space: unset !important;
+  flex: 0 0 28% !important;
+  min-width: 150px !important;
+}
+
+::ng-deep .mat-column-District,
+::ng-deep .mat-column-Maintenance-Office,
+::ng-deep .mat-column-Maint-Office,
+::ng-deep .mat-column-Maint--Office,
+::ng-deep .mat-column-County,
+::ng-deep .mat-column-Primary-Contact-City,
+::ng-deep .mat-column-Secondary-Contact-City,
+::ng-deep .mat-column-Primary-Contact-Phone,
+::ng-deep .mat-column-Secondary-Contact-Phone {
+    white-space: unset !important;
+    flex: 0 0 28% !important;
+    min-width: 100px !important;
+}
+
+::ng-deep .mat-column-Group-Type,
+::ng-deep .mat-column-Total-Count,
+::ng-deep .mat-column-Percent-of-Total  {
+    flex: 0 0 35% !important;
+    width: 35%;
+}
+
+::ng-deep.mat-header-cell.mat-column-Export {
+  right: 0px;
+  position: sticky;
+  display: inline-flex;
+  background-color: hsl(0, 0%, 100%);
+  border-bottom-color: hsl(0, 0%, 100%);
+  margin: 10px 20px;
+}
+
+:host ::ng-deep #report-table-search {
+  padding-left: 15px;
+  padding-right: 10px;
+  margin-right: 50px;
+}
+
+
+::ng-deep .mat-column-Total-Count {
+  text-align: right;
+}
+
+::ng-deep .mat-column-Percent-of-Total {
+  text-align: right;
+}
+

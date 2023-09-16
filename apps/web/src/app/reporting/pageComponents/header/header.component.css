@@ -1,0 +1,55 @@
+.control {
+  margin: 5px;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+}
+
+.p {
+  align-items: baseline;
+}
+
+#reportingHeaderContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50px;
+}
+
+#header-left {
+  flex-direction: row;
+  flex-grow: 1;
+  width: 50%;
+}
+
+#header-right {
+  flex-direction: row-reverse;
+  flex-grow: 1;
+  margin-right: 10px;
+  float:left;
+  line-height:30px;
+}
+
+.report-header {
+  margin-left: 25px;
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.clear-button {
+  float: right;
+}
+
+.mat-flat-button {
+  border: hsl(214, 58%, 47%) solid 1px;
+  height: 30px;
+  line-height: 0;
+}
+
+.report-filter-input-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

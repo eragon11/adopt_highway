@@ -1,0 +1,29 @@
+[
+    {
+        "to": ["test@test.com"],
+        "from": "test@test.com",
+        "subject": "TEST",
+        "context": "Here is a simple email with no attachments"
+    },
+
+    {
+        "to": ["test@test.com"],
+        "from": "test@test.com",
+        "subject": "TEST",
+        "context": "Here is a simple PDF",
+        "attachment": {
+            "path": "../test/simple.pdf",
+            "filename": "simple.pdf"
+        }
+    },
+    {
+        "to": ["test@test.com"],
+        "from": "test@test.com",
+        "subject": "TEST",
+        "template": "test",
+        "context": {
+            "url": "http://example.com",
+            "name": "Test Testerson"
+        }
+    }
+]

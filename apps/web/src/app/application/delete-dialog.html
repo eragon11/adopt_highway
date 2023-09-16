@@ -1,0 +1,5 @@
+<div mat-dialog-content>Delete the application for {{data.groupName}}?</div>
+<div mat-dialog-actions>
+  <button aria-label="OK" mat-raised-button color="primary" (click)="deleteApp()"  [mat-dialog-close]="'delete'">OK</button>
+  <button aria-label="Cancel" mat-raised-button color="warn" mat-dialog-close (click)="onNoClick()">Cancel</button>
+</div>

@@ -1,0 +1,281 @@
+mat-card {
+  margin-bottom: 5px;
+  margin-top: 5px;
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 34%), 0px 1px 3px 0px rgb(0 0 0 / 42%);
+}
+mat-card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+mat-card-content {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+#user-primary-card {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: (0deg 0% 80%);
+}
+
+.contact-card {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+}
+
+.roles-card {
+  width: 310px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: start;
+  width: 100%;
+}
+
+.mat-card-header {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+}
+
+.role-num {
+  margin-bottom: 10px;
+}
+
+.column-1 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  max-width: 700px;
+}
+
+.column-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 30%;
+}
+
+.required-hint {
+  color: hsl(214, 58%, 47%);
+}
+
+.user-field {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+}
+
+.empty-field {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  height: 63px;
+  width: 202px;
+}
+
+h2 {
+  padding-left: 30px;
+  width: 90%;
+}
+
+h1 {
+  color: hsl(214, 58%, 47%);
+}
+
+.mat-dialog-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.mat-input-element:disabled {
+    color: rgba(0,0,0,.8);
+}
+
+mat-form-field label {
+  font-size: 20px;
+}
+
+mat-form-field.mat-form-field-should-float label {
+  font-size: 13px;
+}
+
+mat-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 3;
+}
+
+.loading-div {
+  background-color: rgba(0,0,0,0.3);
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  min-height:100%; 
+  z-index: 2;
+}
+
+.success-snackbar {
+  white-space: pre-wrap;
+  margin-top: 200px !important;
+  background-color: aliceblue;
+}
+
+.role-card {
+  margin-right: 10px;
+  transition: none !important;
+  box-shadow: none !important;
+}
+
+.add-role-btn {
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.user-primary-info {
+  text-align: center;
+
+  /* border: dashed orange; */
+}
+
+.user-label-2 {
+  padding-right: 10px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: hsl(212, 100%, 60%);
+  font-family: 'Open Sans', sans-serif;
+}
+
+.user-label-3 {
+  margin-left: 28px !important;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: rgb(80, 80, 80);
+  font-family: 'Open Sans', sans-serif;
+}
+
+.user-label-nodata {
+  margin-left: 25px;
+  font-weight: 500;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: rgb(116, 116, 116);
+  font-family: 'Open Sans', sans-serif;
+}
+
+.user-primary-info > #user-add-header-container {
+  color: hsl(212, 100%, 60%);
+}
+
+.user-badge {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  margin: 25px;
+  color: white;
+  font-size: 3rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  text-align: center;
+  background-color: hsl(212, 100%, 60%);
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#user-add-header-fullname {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0 !important;
+}
+
+#user-add-tag {
+  font-style: italic;
+  margin-top: 10px;
+}
+
+#user-role-container {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+#user-role {
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .mat-dialog-actions {
+  justify-content: space-evenly !important;
+}
+
+/* //input outline color */
+::ng-deep
+  .user-required
+  > .mat-form-field-appearance-outline
+  .mat-form-field-outline {
+  color: hsl(0, 100%, 50%) !important;
+}
+
+/* mat-icon-stepper selected color change */
+::ng-deep .mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done,
+.mat-step-header .mat-step-icon-state-edit {
+  background-color: hsl(214, 58%, 47%) !important;
+}
+
+/* //input outline color */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: hsl(214, 58%, 47%);
+}
+
+/* //mat-input focused color */
+::ng-deep
+  .mat-form-field-appearance-outline.mat-focused
+  .mat-form-field-outline-thick {
+  color: hsl(214, 58%, 47%) !important;
+}
+
+/* // mat-input carent color */
+::ng-deep .mat-input-element {
+  caret-color: hsl(214, 58%, 47%) !important;
+}
+
+/* // mat-label normal state style */
+::ng-deep .mat-form-field-label {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* // mat-label focused style */
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: hsl(214, 58%, 47%) !important;
+}
+
+.action-icon {
+  background-color: #014b76;
+}
+
+.do-not-show {
+  display: none;
+}

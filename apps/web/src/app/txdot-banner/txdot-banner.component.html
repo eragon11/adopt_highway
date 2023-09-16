@@ -1,0 +1,6 @@
+<title>{{env.mainTitle}}</title>
+<div class="environmentBanner" *ngIf="!isProd" [ngStyle]="{'background-color':environmentBannerColor,'color':'hsla(360, 100%, 100%, 1)'}">{{environment}}</div>
+<div id="txdot_banner" [ngStyle]="{'top':txdot_banner_top}">
+    <img id="txdot_banner_img" [src]="env.txdotBanner" alt="Adopt A Highway Banner Image">
+    <img id="txdot_logo" [src]="env.txdotImage" alt="Texas Department of Transportation logos">
+</div>

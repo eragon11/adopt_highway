@@ -1,0 +1,22 @@
+:host {
+    display: flex;
+}
+
+.dashboard {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-width: 200px;
+    min-height: 300px;
+    background-color: hsl(212, 100%, 24%);
+}
+
+.dashboard-widget {
+    flex-shrink: 0;
+    background-color: hsl(0, 0%, 100%);
+    padding: 1em;
+    margin: 5px;
+    min-height: 200px;
+    min-width: 520px;
+}

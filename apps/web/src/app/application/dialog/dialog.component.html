@@ -1,0 +1,14 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center" class="dialog-title">
+  <h3>{{ data.title }}</h3>
+  <button mat-icon-button aria-label="close dialog" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <p *ngIf="data.message" style="white-space: pre-line;">{{ data.message }}</p>
+  <div *ngIf="data.content" [innerHTML]="data.content"></div>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button (click)="onClickOk()">{{ data.btnOk }}</button>
+  <button mat-stroked-button *ngIf="data.btnClose" (click)="onClickClose()">{{ data.btnClose }}</button>
+</div>

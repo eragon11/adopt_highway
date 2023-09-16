@@ -1,0 +1,85 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px 10px 10px;
+    margin: 0px 0px 0px 0px;
+    font-size: .8em;
+    height: 100%;
+    min-width: 30em;
+}
+
+.dash-widget-header {
+    display: flex;
+    flex: 1;
+}
+
+.dash-widget-footer {
+    display: flex;
+    flex: 1;
+}
+
+.dash-widget-header-text {
+    flex: 2;
+}
+
+.dash-widget-header-report-link {
+    flex: 1;
+}
+
+.dash-widget-filter {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.dash-widget-footer {
+    margin-top: 2.5em;
+    justify-content: space-around;
+}
+
+.dash-widget-body {
+    display: flex;
+    flex: 10;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.dash-widget-body table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dash-widget-body table thead tr th {
+    font-weight: 800;
+}
+
+.dash-widget-footer {
+    display: flex;
+    flex-direction: row nowrap;
+    flex: 1;
+    height: 4em;
+}
+
+.dash-widget-footer-text {
+    font-weight: 400;
+    color: hsl(120, 100%, 25%);
+}
+
+.dash-widget-header div {
+    margin: .5em;
+    align-items: center;
+}
+
+.dash-widget-header-report-link a {
+    font-size: .8em;
+    font-weight: 800;
+}
+
+.dash-widget-header-text {
+    flex: 7;
+    font-weight: 800;
+}
+
+.dash-widget-filter {
+    flex: 1;
+    align-self: flex-end;
+}

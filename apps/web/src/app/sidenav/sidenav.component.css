@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;1,200;1,300&display=swap');
+
+/* The paragraph element is getting is being overridden by the user agent stylesheet
+The display: inline is important to align the img and the text */
+p {
+    display: inline;
+    padding-left: 15px;
+}
+
+.sideNavContainer {
+    display: flex;
+    flex-direction: column;
+    background-color: hsl(212, 100%, 24%);
+    width: 20rem;
+}
+
+.userPane {
+    min-height: 50px;
+    color: hsl(0, 0%, 100%);
+    padding: 15px 15px 15px 15px;
+}
+
+#userSideNav {
+    font-weight: bold;
+    font-size: 1.1em;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+#roleSideNav {
+    font-size: 1em;
+    font-style: italic;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.roleSelector {
+    text-align: center;
+    width: 200px;
+    margin-left: .65rem;
+}
+
+#ngLabel {
+  color: white;
+}
+
+.mat-select-value {
+  color: white;
+}
+
+::ng-deep .mat-select-arrow {
+  color: hsl(0, 0%, 100%);
+}
+
+::ng-deep div.roleSelector span.mat-select-value-text {
+  color: white;
+}
+
+#menuMap, #menuReports, #menuUsers {
+    padding-left: 15px;
+    cursor: pointer;
+}
+
+a.sidebarNav {
+    margin-top: 25px;
+}
+
+a.sidebarNav #menuMap__img, #menuReports__img, #menuUsers__img {
+    float: left;
+}
+
+/* a.sidebarNav #menuMap__text, #menuReports__text, #menuUsers__text { */
+a.sidebarNav {
+    font-family: 'Nunito Sans', sans-serif;
+    color: hsl(0, 0%, 100%);
+    display: inline;
+    font-size: 1rem;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+a.activeSidebarNav {
+    margin-top: 25px;
+}
+
+a.activeSidebarNav #menuMap__img, #menuReports__img, #menuUsers__img {
+    float: left;
+}
+
+
+a.activeSidebarNav {
+    display: inline !important;
+    font-family: 'Nunito Sans', sans-serif;
+    color: hsl(0, 0%, 0%);
+    font-size: 1rem;
+    padding-left: 10px;
+}
+
+/* fancy link highlighting */
+a {
+    background: linear-gradient( to right, hsl(207, 73%, 70%) 0%, hsl(207, 73%, 70%) 5px, transparent 5px);
+    background-repeat: repeat-x;
+    background-size: 100%;
+    color: #000;
+    padding: 5px 0px 5px 2px;
+    text-decoration: none;
+}
+
+a:hover, .activeSidebarNav {
+    background: linear-gradient( to right, hsl(207, 73%, 70%) 0%, hsl(207, 73%, 70%) 5px, transparent);
+}
+
+a:focus {
+    box-shadow: 0 0 0 5px hsl(207, 73%, 73%) inset;
+}
+
+#menuLogout {
+    cursor: pointer;
+    width: 91%;
+    padding-left: 20px;
+    position: absolute;
+    bottom: 80px;
+}
+
+#menuLogout #menuLogout__img {
+    float: left;
+}
+
+#menuLogout #menuLogout__text {
+    font-family: 'Nunito Sans', sans-serif;
+    color: hsl(0, 0%, 100%);
+    display: inline;
+    font-size: 1rem;
+    padding-left: 10px;
+}
+
+#copyright {
+    position: absolute;
+    margin-left: 15px;
+    min-width: 160px;
+    bottom: 10px;
+    text-align: center;
+}
+
+#copyright #copyright__img {
+    float: left;
+    text-align: center;
+}
+
+#copyright #copyright__text,
+.whitetext {
+    color: hsl(0, 0%, 100%);
+    font-size: .8rem;
+    display: inline;
+    font-family: 'Nunito Sans', sans-serif;
+    padding-left: 10px;
+}
+
+a.subSidebarNav {
+    margin-top: 5px;
+}
+
+a.subSidebarNav #menuMap__img, #menuReports__img, #menuUsers__img {
+    float: left;
+}
+
+a.subSidebarNav {
+    background:  transparent;
+    font-family: 'Nunito Sans', sans-serif;
+    color: hsl(0, 0%, 100%);
+    display: inline;
+    font-size: 1rem;
+    margin-left: 30px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+a.activeSubSidebarNav {
+    margin-top: 25px;
+}
+
+a.activeSubSidebarNav #menuMap__img, #menuReports__img, #menuUsers__img {
+    float: left;
+    background: linear-gradient( to right, hsl(207, 73%, 70%) 0%, hsl(207, 73%, 70%), transparent)
+}
+
+
+a.activeSubSidebarNav {
+    display: inline !important;
+    font-family: 'Nunito Sans', sans-serif;
+    color: hsl(0, 0%, 0%);
+    font-size: 1rem;
+    padding-left: 10px;
+    background: linear-gradient( to right, hsl(207, 73%, 70%) 0%, hsl(207, 73%, 70%), transparent)
+}
+
+a:hover, .activeSubSidebarNav {
+ background: linear-gradient( to right, hsl(207, 73%, 70%) 0%, hsl(207, 73%, 70%), transparent)
+}
+
+.subSidenavImgs {
+    margin-left: 5px;
+}
+
+.subSidebarNav mat-icon {
+    vertical-align: middle;
+  }
+  
+.sidebarNav mat-icon {
+    vertical-align: middle;
+  }

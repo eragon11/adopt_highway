@@ -1,0 +1,153 @@
+.pageContainer {
+  background-color: lightgray;
+}
+.spinnerContainer {
+  background-color: lightgray;
+  width: 100%;
+  height: 600px;
+  padding-top: 300px;
+}
+
+.application-form-box {
+  background-color: #fff;
+  border-radius: 20px;
+  border: 1px solid black;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.application-form-box mat-card {
+  padding: 16px 0;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.application-form-box mat-card .header {
+  width: 100%;
+}
+
+.application-form-box mat-card .header .title {
+  padding-left: 70px;
+  color: orange;
+}
+
+.application-form-box .form-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10%;
+  margin-top: 3em;
+  width: 80%;
+}
+
+.application-form-box .form-container button {
+  width: 100px;
+}
+
+.control-container {
+  border: 1px solid lightblue;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px;
+}
+.column-container {
+  padding: 10px;
+}
+
+.column-container-right {
+  padding: 10px;
+}
+
+.column-container mat-label {
+  margin: 20px;
+  font-weight: 500;
+}
+
+.column-container-right mat-label {
+  margin: 20px;
+}
+
+.header-row mat-label {
+  margin: 15px;
+  font-weight: 500;
+}
+
+.header-row div {
+  margin-top: 40px;
+}
+
+.data-row div {
+  margin-top: 40px;
+  margin-left: 5px;
+}
+
+.data-row mat-label {
+  margin: 30px;
+  font-weight: normal;
+}
+
+.app-toolbar {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: lightgrey;
+}
+
+.backButton {
+  margin-left: 3rem;
+  font-size: 20px;
+  font-weight: 500;
+  color: #007ac2;
+  cursor: pointer;
+}
+
+.group-name-title {
+  padding-left: 2rem;
+}
+
+/* cursor: pointer; */
+
+.colorBlue {
+  color: #007ac2;
+}
+
+.pointer-button {
+  cursor: pointer;
+}
+
+.anchor-pointer {
+  z-index: 100;
+}
+
+@media only screen and (min-width: 1300px) {
+  .tabContainer {
+    margin-top: -60px;
+  }
+}
+
+::ng-deep .mat-tab-label .mat-tab-label-content {
+  font-size: large;
+}
+
+:host ::ng-deep .mat-tab-label {
+  height: 3rem !important;
+  min-width: 8rem !important;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto; /* two columns */
+  grid-template-rows: repeat(10, auto); /* ten rows */
+  gap: 10px; /* optional gap between cells */
+  margin-left: 15px;
+}
+
+.property-label {
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+h4 {
+  color: hsl(211.97deg 100% 23.92%);
+  margin-bottom: 0;
+}

@@ -1,0 +1,102 @@
+<div class="report_table">
+  <ng-container>
+    <!-- Filter -->
+    <ng-container *ngIf="isFilterable" [matColumnDef]="this.rowActionIcon">
+      <mat-form-field id="report-table-search">
+        <mat-label>Filter current table</mat-label>
+        <input id="report-filter-input" matInput [(ngModel)]="filter" (keyup)="applyFilter($event)" placeholder="filter"
+          #input>
+      </mat-form-field>
+    </ng-container>
+
+    <!-- Table -->
+    <table mat-table matTableExporter [dataSource]="tableDataSource" [hiddenColumns]="indexOfExportColumn"
+      #exporter="matTableExporter" matSort (matSortChange)="sortTable($event)">
+
+      <!-- action column -->
+      <ng-container *ngIf="rowActionIcon?.length" [matColumnDef]="rowActionIcon">
+        <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element" [id]="rowActionIcon" (click)="emitRowAction(element)">
+          <button mat-button>
+            <mat-icon>{{rowActionIcon}}</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <ng-container *ngFor="let tableColumn of tableColumns" [matColumnDef]="tableColumn.name">
+
+        <!-- if sortable column header -->
+        <ng-container *ngIf="tableColumn.isSortable; else notSortable">
+          <th mat-header-cell *matHeaderCellDef [mat-sort-header]="tableColumn.name"
+            [arrowPosition]="'after'" [start]="desc">
+            {{tableColumn.name}}
+          </th>
+        </ng-container>
+        <!-- else not sortable -->
+        <ng-template #notSortable>
+          <!-- now check to see if its a control column -->
+          <ng-container *ngIf="tableColumn.isControl; else notControl">
+            <th mat-header-cell *matHeaderCellDef>
+              <button mat-mini-fab id="client-table-filter" class="floating-btns" color="primary"
+                (click)="filterControl($event)" title="Current report filtering" tabindex="0">
+                <mat-icon>search</mat-icon>
+              </button>
+              <button mat-mini-fab class="floating-btns" color="primary" (click)="exportOverlayOpen = !exportOverlayOpen"
+                cdkOverlayOrigin #trigger="cdkOverlayOrigin" title="Export current report" tabindex="0">
+                <mat-icon>file_download</mat-icon>
+              </button>
+              <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
+                [cdkConnectedOverlayOpen]="exportOverlayOpen">
+                <select #exportType name="exportSelectBox" class="export-select" id="exportSelectBox"
+                  (change)="exporter.exportTable(exportType.value, {fileName: 'aah-report-export'}); exportOverlayOpen=false">
+                  <option selected value="default"><span id="choose">Choose Format</span></option>
+                  <option value="xlsx"><span id="exportText">Export xlsx</span></option>
+                  <option value="xls"><span id="exportText">Export xls</span></option>
+                  <option value="csv"><span id="exportText">Export csv</span></option>
+                  <option value="txt"><span id="exportText">Export txt</span></option>
+                  <option value="json"><span id="exportText">Export json</span></option>
+                </select>
+              </ng-template>
+            </th>
+            <mat-cell *matCellDef="let row"> </mat-cell>
+          </ng-container>
+          <!-- Otherwise it is just a non sortable column -->
+          <ng-template #notControl>
+            <th mat-header-cell *matHeaderCellDef>
+              {{tableColumn.name}}
+            </th>
+          </ng-template>
+        </ng-template>
+
+        <!-- column data -->
+        <td mat-cell *matCellDef="let element" [class.text-right]="tableColumn.position == 'right'">
+          {{element | dataPropertyGetter: tableColumn.dataKey}}
+        </td>
+
+      </ng-container>
+      <ng-container *ngIf="hasGroupBy">
+        <ng-container matColumnDef="groupHeader">
+          <td colspan="999" mat-cell *matCellDef="let dataElement" class='group-by-row'>
+            <strong>{{dataElement.value}}</strong>
+          </td>
+        </ng-container>
+        <tr mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup"> </tr>
+      </ng-container>
+      <!-- Use the directive to display a message to the users if no records were returned -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="9999" class="empty-table">
+          No records found
+        </td>
+      </tr>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <!-- Pagination -->
+  </ng-container>
+</div>
+<mat-paginator id="reportPaginator" class="mat-paginator-sticky" *ngIf="isPageable" [pageSizeOptions]="paginationSizes"
+  [pageSize]="defaultPageSize" (page)="onPaginate($event)" [length]="length"
+  [showFirstLastButtons]="showFirstLastButtons">
+</mat-paginator>

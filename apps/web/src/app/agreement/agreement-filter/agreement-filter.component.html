@@ -1,0 +1,33 @@
+<div>
+
+  <form [formGroup]="agreementFilterForm" class="filter-form" (autoSearch)="agreementSearchFilter = $event">
+    <div class="agreement-filter-input-container">
+      <input id="district-filter" resource="areaFilter_District" action="update" *ngIf="!isDistrictCoordinator"
+        class="filter-input" type="text" placeholder="Filter by District" aria-label="Search by district"
+        formControlName="districtForm" [matAutocomplete]="districtAuto" />
+      <mat-autocomplete #districtAuto="matAutocomplete" (optionSelected)="districtSelectEvent($event.option.id)">
+        <mat-option *ngFor="let district of districtsTemplateArray | async" [value]="district.name"
+          [id]="district.number">
+          {{ district.name }}
+        </mat-option>
+      </mat-autocomplete>
+
+      <input id="county-filter" resource="areaFilter_county" action="update" class="filter-input"
+        type="text" #countiesTrigger="matAutocompleteTrigger" placeholder="Filter by County"
+        aria-label="Search by County" formControlName="countyForm" [matAutocomplete]="countyAuto"
+        (input)="watchCountyInput()" [disabled]="isDistrictEmpty" />
+      <mat-autocomplete #countyAuto="matAutocomplete" (optionSelected)="countySelectEvent($event.option.id)">
+        <mat-option *ngFor="let county of countiesTemplateArray | async" [value]="county.name" [id]="county.number">
+          {{ county.name }}
+        </mat-option>
+      </mat-autocomplete>
+
+      <div id="group-search">
+        <mat-icon id="mat-icon-search" resource="groupSearch" aria-hidden="true" matPrefix>search</mat-icon>
+        <input class="filter-input" id="group-search-input" action="update" aria-label="Search by group name"
+          placeholder="Group Name" aria-label="Search by group name" formControlName="filterGroupName" />
+      </div>
+
+    </div>
+  </form>
+</div>

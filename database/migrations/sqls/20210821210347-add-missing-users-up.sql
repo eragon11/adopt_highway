@@ -1,0 +1,84 @@
+CREATE
+OR ALTER PROCEDURE aah_insert_missing_users AS BEGIN;
+SET NOCOUNT ON;
+-- insert volunteers
+DECLARE @user_person TABLE (
+        ORGANIZATION_ID int NOT NULL,
+        [USERNAME] NVARCHAR(255) NULL,
+        [PREFIX] NVARCHAR(255) NULL,
+        [FIRST_NAME] NVARCHAR(255) NULL,
+        [MIDDLE_NAME] NVARCHAR(255) NULL,
+        [LAST_NAME] NVARCHAR(255) NULL,
+        [SUFFIX] NVARCHAR(255) NULL,
+        [TITLE] NVARCHAR(255) NULL,
+        [PREFERRED_NAME] NVARCHAR(255) NULL
+    );
+INSERT INTO @user_person (
+        [ORGANIZATION_ID],
+        [PREFIX],
+        [FIRST_NAME],
+        [MIDDLE_NAME],
+        [LAST_NAME],
+        [SUFFIX],
+        [TITLE],
+        [PREFERRED_NAME]
+    )
+SELECT DISTINCT [AAH_CNTCT_ID],
+    [CNTCT_PRFX_NM],
+    [CNTCT_FRST_NM],
+    [CNTCT_MIDL_NM],
+    [CNTCT_LAST_NM],
+    replace([CNTCT_SFX_NM], '0', ''),
+    [CNTCT_CRDNTL_NM],
+    [CNTCT_PRFR_NM]
+FROM aah_legacy..aah_cntct t1
+    LEFT JOIN USER_PERSON t2 ON t1.AAH_CNTCT_ID = t2.USER_ID
+WHERE t2.USER_ID IS NULL;
+UPDATE @user_person
+SET PREFIX = ''
+WHERE PREFIX = '0';
+UPDATE @user_person
+SET USERNAME = CONCAT(
+        [ORGANIZATION_ID],
+        ':',
+        FIRST_NAME,
+        ':',
+        MIDDLE_NAME,
+        ':',
+        LAST_NAME
+    )
+INSERT INTO USER_PERSON (
+        [USERNAME],
+        [PREFIX],
+        [FIRST_NAME],
+        [MIDDLE_NAME],
+        [LAST_NAME],
+        [SUFFIX],
+        [TITLE],
+        [PREFERRED_NAME]
+    )
+SELECT t1.USERNAME,
+    t1.[PREFIX],
+    t1.[FIRST_NAME],
+    t1.[MIDDLE_NAME],
+    t1.[LAST_NAME],
+    t1.[SUFFIX],
+    t1.[TITLE],
+    t1.[PREFERRED_NAME]
+FROM @user_person t1
+    LEFT JOIN USER_PERSON t2 on t1.USERNAME = t2.USERNAME
+WHERE t2.USER_ID IS NULL;
+INSERT INTO ROLE (ORGANIZATION_ID, USER_ID, TYPE, START_DATE)
+SELECT AAH_GRP_ID,
+    AAH_CNTCT_ID,
+    'Volunteer',
+    CREATE_DTTM
+FROM aah_legacy..AAH_GRP_CNTCT t1
+    LEFT JOIN @user_person t2 ON t1.AAH_CNTCT_ID = t2.ORGANIZATION_ID
+    LEFT JOIN ROLE t3 on t1.AAH_GRP_ID = t1.AAH_GRP_ID
+    AND t1.AAH_CNTCT_ID = t3.USER_ID
+    AND 'Volunteer' = t3.TYPE
+    AND CONVERT(CHAR(22), t1.CREATE_DTTM, 100) = CONVERT(CHAR(22), t3.START_DATE, 100)
+WHERE t3.ROLE_ID IS NULL AND t2.ORGANIZATION_ID IS NOT NULL;
+SET NOCOUNT OFF;
+END;

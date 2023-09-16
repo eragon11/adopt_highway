@@ -1,0 +1,43 @@
+<md:EntityDescriptor ID="ppdhDtulVeQBxI2hJwbEXO9YwwB" cacheDuration="PT1440M" entityID="TxDOTSAML" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+    <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:SignedInfo>
+            <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+            <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+            <ds:Reference URI="#ppdhDtulVeQBxI2hJwbEXO9YwwB">
+                <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </ds:Transforms>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <ds:DigestValue>QGhdxltL6x02H6e8UTMYv0UsatzpkPHi/J4tOxgqOJM=</ds:DigestValue>
+            </ds:Reference>
+        </ds:SignedInfo>
+        <ds:SignatureValue>fI9Sf/IfHh7U47GRYygy0NyuR9r+QXi8T32SDKNxUnftlj/sX9eqprzBoZKqrp3YFsXbb48uQCuccURYujjgiRZ+plT6wERAWJX9o8KDWP9HlRSeBrRZKqSlvq/ISLJPzGCqJzPRBXH+4oi5tJOM1H2WXL5g90PvOS5WKQ6W4TLDUllT5B5vYypAmNkULKwfJDPv04qvF4QBnA3UQiDv77JXkrc90WjWaHue9/hgQQg7xulbuWwm2+44s5YSLWhSsh/z/NlaK1IwWlDK4zf7etiu4LhvKocES+VqlYPjM/FwOS3PQYddqCSrsl4RCK2zXJffNEs9LqyjawK2MNXTOg==</ds:SignatureValue>
+        <ds:KeyInfo>
+            <ds:X509Data>
+                <ds:X509Certificate>MIIC7jCCAdagAwIBAgIGAYBI3+VNMA0GCSqGSIb3DQEBCwUAMDgxCzAJBgNVBAYTAlVTMQ0wCwYDVQQKEwRQMUFTMRowGAYDVQQDExFUZXN0LVNpZ25pbmctQ2VydDAeFw0yMjA0MjAyMTI3NTRaFw0yMzA0MjAyMTI3NTRaMDgxCzAJBgNVBAYTAlVTMQ0wCwYDVQQKEwRQMUFTMRowGAYDVQQDExFUZXN0LVNpZ25pbmctQ2VydDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIt/A1jarQzbH5A5o8ShtZiPUTDIjcHdX3UDrNJzJxybUAqNXPa+9g1Ab17BxQHRYj/hQDIlbB+8tixy1emBInwQLIVyBgnlsFJCb562i8gHjU0a6TlePm5Wd0wS11RckD53UDYLIx3aPU64nhJm52FdCMSzis+2ybLEHI9Y41d4TQQXkMY0yyroefcB6y2zEIuqLiWIbq6y2NSQDNs6jprP9ah6InvIFPJAHlsbCFfkAQyEwQ599sUlqsO7eiISIxzJ7BPga60cOC+WGn93GQzvQJd/FOJUYXcCFg1x1EmTeQHGZpIy22yvHgpyxq11mkw3yrPqvRTII2v7X6T/z+8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAIHGOxSqArlrrYqt5jLDh/97IWRixHpxHkThd3GJmCAWrQrjYZKZj4ltxQayN8SJK9w1o2d/+Lul/1pNjTU8cn0eiGJ3dgZow+h3HzF36vH//yU2VTiuYx1pBrd4C4vu/aVwl2/b2+pVUDaZ7RtKft8MizBmArzSPkIMAhvoh/YsLD8gpUruOY8CMeTm+hsTnGPdbSc8VwxklsBUF3t54VR9m7msmg4zZ7YMETjbtI1vjJi3j6/WEF7jldfNLgCeV+cWjXB7KTi+flTLADuFV7GVGfA1U5ww70m4ahIUq1UiwAtrYMjuXQ50ufkXtYCjbpJER7qgm9gE7qlFkdoZEEA==</ds:X509Certificate>
+            </ds:X509Data>
+        </ds:KeyInfo>
+    </ds:Signature>
+    <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol" WantAuthnRequestsSigned="true">
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIIC7jCCAdagAwIBAgIGAYBI3+VNMA0GCSqGSIb3DQEBCwUAMDgxCzAJBgNVBAYTAlVTMQ0wCwYDVQQKEwRQMUFTMRowGAYDVQQDExFUZXN0LVNpZ25pbmctQ2VydDAeFw0yMjA0MjAyMTI3NTRaFw0yMzA0MjAyMTI3NTRaMDgxCzAJBgNVBAYTAlVTMQ0wCwYDVQQKEwRQMUFTMRowGAYDVQQDExFUZXN0LVNpZ25pbmctQ2VydDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIt/A1jarQzbH5A5o8ShtZiPUTDIjcHdX3UDrNJzJxybUAqNXPa+9g1Ab17BxQHRYj/hQDIlbB+8tixy1emBInwQLIVyBgnlsFJCb562i8gHjU0a6TlePm5Wd0wS11RckD53UDYLIx3aPU64nhJm52FdCMSzis+2ybLEHI9Y41d4TQQXkMY0yyroefcB6y2zEIuqLiWIbq6y2NSQDNs6jprP9ah6InvIFPJAHlsbCFfkAQyEwQ599sUlqsO7eiISIxzJ7BPga60cOC+WGn93GQzvQJd/FOJUYXcCFg1x1EmTeQHGZpIy22yvHgpyxq11mkw3yrPqvRTII2v7X6T/z+8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAIHGOxSqArlrrYqt5jLDh/97IWRixHpxHkThd3GJmCAWrQrjYZKZj4ltxQayN8SJK9w1o2d/+Lul/1pNjTU8cn0eiGJ3dgZow+h3HzF36vH//yU2VTiuYx1pBrd4C4vu/aVwl2/b2+pVUDaZ7RtKft8MizBmArzSPkIMAhvoh/YsLD8gpUruOY8CMeTm+hsTnGPdbSc8VwxklsBUF3t54VR9m7msmg4zZ7YMETjbtI1vjJi3j6/WEF7jldfNLgCeV+cWjXB7KTi+flTLADuFV7GVGfA1U5ww70m4ahIUq1UiwAtrYMjuXQ50ufkXtYCjbpJER7qgm9gE7qlFkdoZEEA==</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://pingfederate.dev-txdot.us1.ping.cloud/idp/SLO.saml2" />
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://pingfederate.dev-txdot.us1.ping.cloud/idp/SLO.saml2" />
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://pingfederate.dev-txdot.us1.ping.cloud/idp/SSO.saml2" />
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://pingfederate.dev-txdot.us1.ping.cloud/idp/SSO.saml2" />
+    </md:IDPSSODescriptor>
+    <md:ContactPerson contactType="administrative">
+        <md:Company>TxDOT</md:Company>
+        <md:GivenName>Alex</md:GivenName>
+        <md:SurName>Gutierrez</md:SurName>
+        <md:EmailAddress>alex.gutierrez@txdot.gov</md:EmailAddress>
+        <md:TelephoneNumber>(512) 465-7306</md:TelephoneNumber>
+    </md:ContactPerson>
+</md:EntityDescriptor>

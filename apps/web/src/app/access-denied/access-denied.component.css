@@ -1,0 +1,7 @@
+.container {
+    display: block;
+    background-color: white;
+    color: hsl(0, 0%, 35%);
+    padding: 5em;
+    bottom: 0;
+}

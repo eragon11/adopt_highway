@@ -1,0 +1,78 @@
+<nav aria-label="Main" role="navigation">
+  <div id="custom_header" role="navigation" class="flex-container" aria-label="Main">
+    <div id="wrapper1" class="flex-container">
+      <app-sidenav-toggle></app-sidenav-toggle>
+    </div>
+  </div>
+</nav>
+<main role="main">
+  <div class="pageContainer">
+    <div class="headerStyle">
+      <span>New Agreements</span>
+      <agreement-filter></agreement-filter>
+    </div>
+    <div class="table-container">
+      <table mat-table [dataSource]="agreements" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="Date Submitted">
+          <th mat-header-cell *matHeaderCellDef>Date Submitted </th>
+          <td mat-cell *matCellDef="let element"> {{element.createdOn | date: 'MM/dd/yyyy'}}
+            <button mat-icon-button class="mat-red-icon" *ngIf="!isTwoweeksOlder(element)">
+              <mat-icon matTooltip="Not modified in over 2 weeks" matTooltipPosition='above'>error</mat-icon>
+            </button>
+            <button mat-icon-button class="mat-yellow-icon" *ngIf="!is30DaysOlder(element)">
+              <mat-icon matTooltip="Over 30 days old" matTooltipPosition='above'>error</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Group Name">
+          <th mat-header-cell *matHeaderCellDef>Group Name </th>
+          <td mat-cell tabindex="0" (keyup.enter)="openApplication(element.id)" (keyup.space)="openApplication(element.id)" *matCellDef="let element" class="linkText" (click)="openApplication(element.id)"> {{element.groupName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Contact Name">
+          <th mat-header-cell *matHeaderCellDef> Contact Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.primaryContactFullName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Contact Email">
+          <th mat-header-cell *matHeaderCellDef> Contact Email </th>
+          <td mat-cell *matCellDef="let element"> {{element. primaryContactEmail}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="County">
+          <th mat-header-cell *matHeaderCellDef> County </th>
+          <td mat-cell *matCellDef="let element"> {{element.requestedHighwayCountyName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="District">
+          <th mat-header-cell *matHeaderCellDef> District </th>
+          <td mat-cell *matCellDef="let element"> {{element.districtName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Segment Name">
+          <th mat-header-cell *matHeaderCellDef> Segment Name </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="{'colorRed': !element.aahRouteName }">
+            {{element.aahRouteName?element.aahRouteName:'- - - - -' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Application Status">
+          <th mat-header-cell *matHeaderCellDef> Application Status </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="{'colorRed': element.agreementStatus == 'Sign name denied','colorBlue': element.agreementStatus != 'Sign name denied'}">
+            {{element.agreementStatus}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" align="center" [attr.colspan]="displayedColumns.length">
+            No Data Found.
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <mat-paginator id="newAgreementPaginator" class="mat-paginator-sticky" [pageSizeOptions]="paginationSizes" [pageSize]="defaultPageSize" (page)="onPaginate($event)" [showFirstLastButtons]="showFirstLastButtons">
+    </mat-paginator>
+  </div>
+</main>

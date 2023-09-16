@@ -1,0 +1,90 @@
+<div class="add-pickup-dialog">
+  <!-- <div *ngIf="isEdit" class="loading-div">
+    <mat-spinner mode="indeterminate" diameter="120" strokeWidth="12" aria-label="progress-spinner"></mat-spinner>
+  </div> -->
+  <main aria-labelledby="pickup-add-header-container">
+    <form novalidate [formGroup]="pickupForm" (ngSubmit)="savePickup()">
+
+      <h1 mat-dialog-title *ngIf="!isEdit" aria-label="Add new pickup">Add New Pickup</h1>
+      <h1 mat-dialog-title *ngIf="isEdit" aria-label="Edit pickup">Edit Pickup</h1>
+      <div mat-dialog-content>
+
+        <div class="pickup-form">
+
+          <mat-form-field class="pickup-field pickup-required" appearance="outline">
+            <mat-label id="type-label">Pickup Type</mat-label>
+            <mat-select class="pickup-input" formControlName="type" aria-labelledby="status-label"
+              [(value)]="defaultPickupType" (selectionChange)="setType($event.value)">
+              <mat-option *ngFor="let type of pickupTypesArr" [value]="type">
+                {{type}}
+              </mat-option>
+            </mat-select>
+            <mat-hint class="required-hint">Required</mat-hint>
+            <mat-error *ngIf="pickupForm.get('type').invalid">Please select a pickup type</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="dateFormField pickup-field pickup-required">
+            <mat-label>Pickup Date</mat-label>
+            <input matInput [matDatepicker]="pickupDate" formControlName="pickupDate" class="dateInput"
+              (dateChange)="dateChange('change', $event, 'pickupDate')" [max]=todaysDate>
+            <mat-hint class="required-hint">Required</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="pickupDate"></mat-datepicker-toggle>
+            <mat-datepicker #pickupDate></mat-datepicker>
+            <mat-error>
+              <span>Pickup date is required</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="pickup-field pickup-required" appearance="outline">
+            <mat-label>Number of Bags Collected</mat-label>
+            <input class="pickup-input" aria-label="Number of Bags Collected" formControlName="numberOfBagsCollected" matInput
+              type="number" required>
+            <mat-hint class="required-hint">Required</mat-hint>
+            <mat-error *ngIf="pickupForm.get('numberOfBagsCollected').invalid">Please enter the number of bags collected (between 1-1000)
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="pickup-field pickup-required" appearance="outline">
+            <mat-label>Number of Volunteers</mat-label>
+            <input class="pickup-input" aria-label="Number of Volunteers" formControlName="numberOfVolunteers" matInput
+              type="number" required>
+            <mat-hint class="required-hint">Required</mat-hint>
+            <mat-error *ngIf="pickupForm.get('numberOfVolunteers').invalid">Please enter the number of volunteers (between 1-1000)
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="pickup-field pickup-required" appearance="outline">
+            <mat-label>Comments</mat-label>
+            <textarea class="pickup-input" #commentsInput aria-label="Comments" formControlName="comments" matInput type="text"
+              rows="5"></textarea>
+              <mat-hint>{{commentsInput.value.length}}/{{maxCommentLength}}</mat-hint>
+             
+          </mat-form-field>
+
+        </div>
+
+
+
+
+
+      </div>
+
+      <div mat-dialog-actions>
+        <button aria-label="Save new pickup" mat-raised-button color="primary" type="submit"
+          [disabled]="pickupForm.invalid" matTooltip="Save new pickup" matTooltipClass="tooltip"
+          matTooltipPosition="above">
+          <mat-icon>save</mat-icon>
+        </button>
+        <button *ngIf="isEdit" aria-label="Delete pickup" mat-raised-button color="primary" type="button"
+        matTooltip="Delete Pickup" matTooltipClass="tooltip" (click)="onDeleteClick()"
+        matTooltipPosition="above">
+        <mat-icon>delete</mat-icon>
+      </button>
+        <button aria-label="Cancel save new pickup" mat-raised-button color="primary" type="button"
+          (click)="onNoClick()" matTooltip="Cancel" matTooltipClass="tooltip" matTooltipPosition="above">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </form>
+  </main>
+</div>

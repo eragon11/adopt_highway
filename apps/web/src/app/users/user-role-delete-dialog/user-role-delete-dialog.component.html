@@ -1,0 +1,18 @@
+<div id="delete-container">
+  <div id="delete-header-container">
+    <mat-icon class="delete-icon" aria-hidden="false" aria-label="Delete user icon">delete</mat-icon><span
+      id="delete-header">Delete Role</span>
+  </div>
+  <mat-dialog-content class="delete-user-content">
+    <p>Are you sure you want to remove the <b>{{ data.roleType }}</b> role for <b>{{ data.user.firstName }}
+      {{ data.user.lastName }}</b>?</p>
+  </mat-dialog-content>
+  <mat-dialog-actions id="delete-dialog-buttons">
+    <button id="cancel-button" mat-raised-button mat-dialog-close>
+      Cancel
+    </button>
+    <button mat-raised-button [mat-dialog-close]="true" color="warn">
+      Delete
+    </button>
+  </mat-dialog-actions>
+</div>

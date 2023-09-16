@@ -1,0 +1,9 @@
+ text=crlf
+ 
+ *.ps1 linguist-vendored eol=crlf
+  *.sql linguist-vendored eol=crlf
+ *.css linguist-vendored eol=crlf
+ *.scss linguist-vendored eol=crlf
+ *.js linguist-vendored eol=crlf
+ *.ts linguist-vendored eol=crlf
+ CHANGELOG.md export-ignore 

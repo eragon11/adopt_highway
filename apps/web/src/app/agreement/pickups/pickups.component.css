@@ -1,0 +1,144 @@
+.table-container {
+  margin: 40px;
+  height: 100%;
+  border-radius: 25px;
+  background-color: white;
+}
+.mat-table {
+  overflow: hidden;
+  max-height: 500px;
+  border-radius: 25px;
+  padding: 25px;
+}
+th.mat-header-cell {
+  text-align: left !important;
+  font-size: 16px;
+  font-weight: bolder;
+  border-bottom: none;
+}
+table {
+  width: 100%;
+  border-spacing: 0 8px !important;
+}
+.headerStyle {
+  margin-left: 3rem;
+  margin-right: 3rem;
+  padding-top: 2rem;
+  font-size: 20px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.pageContainer {
+  background-color: white;
+}
+.mat-drawer-container {
+  background-color: #fafafa;
+  color: rgba(0, 0, 0, 0.87);
+}
+td.mat-cell {
+  /* row padding */
+  padding: 16px 0;
+  /* row border */
+  border-bottom: 1px solid lightblue;
+  border-top: 1px solid lightblue;
+}
+.mat-paginator-sticky {
+  bottom: 0px;
+  position: sticky;
+  z-index: 10;
+}
+
+td.mat-cell:first-child {
+  /* row border */
+  border-left: 1px solid lightblue;
+  border-bottom-left-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+td.mat-cell:last-child {
+  /* row border */
+  border-right: 1px solid lightblue;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+table {
+  /* row spacing / margin */
+  border-spacing: 0 8px !important;
+}
+.spacer {
+  height: 10px;
+}
+.colorRed {
+  color: red;
+}
+.colorBlue {
+  color: #007ac2;
+}
+.mat-red-icon {
+  color: red;
+}
+.mat-yellow-icon {
+  color: orange;
+}
+.mat-icon {
+  vertical-align: middle;
+}
+.mat-header-cell.alignTextCenter {
+  display: flex;
+  text-align: center !important;
+  justify-content: center !important;
+}
+.mat-header-cell.segmentColumn {
+  display: flex;
+  text-align: center !important;
+  justify-content: center !important;
+}
+
+.mat-row:hover {
+  background: lightgray;
+}
+
+td:hover {
+  cursor: pointer;
+}
+
+.linkText {
+  cursor: pointer;
+  color: #007ac2;
+  text-decoration: underline;
+}
+
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
+  padding-left: 24px !important;
+}
+
+.anchor-pointer {
+  cursor: pointer;
+}
+
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: unset;
+}
+
+.comments-ellipsis {
+  text-overflow: ellipsis;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.add-pickup {
+  float: right;
+  margin-top: -20px;
+  margin-right: 20px;
+  margin-bottom: 30px;
+}
+
+.comments-tr {
+  line-height: 3;
+}

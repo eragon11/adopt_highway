@@ -1,0 +1,225 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* 'Open Sans' font from Google Fonts */
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,500,600,700);
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;1,200;1,300&display=swap');
+@import url(https://js.arcgis.com/4.20/esri/themes/light/main.css);
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+select {
+  padding: 4px;
+  vertical-align: middle;
+}
+
+select:focus {
+  box-shadow: 0 0 0 5px hsl(207, 73%, 70%);
+}
+
+button {
+  background: transparent;
+  box-shadow: 0px 0px 0px transparent;
+  border: 0px solid transparent;
+  text-shadow: 0px 0px 0px transparent;
+}
+
+button:active {
+  box-shadow: 0 0 0 5px hsla(201, 83%, 49%, 0.4) inset;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 5px hsl(207, 73%, 70%) inset;
+}
+
+button:hover {
+  box-shadow: 0px 0px 0px transparent;
+  border: 0px solid transparent;
+  text-shadow: 0px 0px 0px transparent;
+}
+
+.esri-icon-non-visible::before {
+  content: '\e610' !important;
+}
+
+.esri-icon-visible::before {
+  content: '\e611' !important;
+}
+
+.esri-legend__layer-caption {
+  display: none !important;
+}
+
+.esri-legend__service-label {
+  display: none !important;
+}
+
+.esri-legend__message {
+  display: none;
+}
+
+.esri-input.esri-search__input::placeholder {
+  color: hsl(240, 100%, 50%);
+  font-style: bold;
+  font-size: 0.8rem;
+}
+
+.esri-input.esri-search__input {
+  visibility: visible;
+  font-size: 0.75rem;
+  margin-right: 0px;
+  opacity: 100;
+  color: hsl(240, 100%, 50%);
+}
+
+#filterDiv.esri-component {
+  box-shadow: none !important;
+}
+
+.mat-paginator-container {
+  justify-content: center !important;
+}
+
+.esri-view-width-xlarge .esri-popup__main-container {
+  width: 575px !important;
+  border: 2px hsl(214, 58%, 47%) solid;
+}
+
+.esri-view-width-xlarge .esri-popup__header {
+  align-items: flex-start;
+  position: relative;
+  justify-content: space-between;
+  flex: 0 1 auto;
+}
+
+.esri-popup__header
+  .esri-view-width-xlarge
+  .esri-popup__footer--has-pagination
+  .esri-popup__header--has-actions {
+  width: 50px !important;
+  height: 50px !important;
+  box-sizing: 100px !important;
+  order: 2;
+  content: 'Email address: ';
+}
+
+.esri-component .esri-expand .esri-widget .esri-expand--auto {
+  border: 2px hsl(214, 58%, 47%) solid;
+}
+
+.esri-expand__container {
+  border: 2px hsl(214, 58%, 47%) solid;
+}
+
+.esri-view-width-xlarge .esri-popup__inline-actions-container {
+  width: 700px !important;
+}
+
+.esri-popup__footer .esri-popoup_footer-has-pagination {
+  width: 300px !important;
+}
+
+.esri-popup_button .esri-popup__action {
+  width: 100px;
+}
+
+.esri-popup__action[aria-label='Update:  '] {
+  pointer-events: none;
+  background-color: transparent;
+}
+
+.mat-drawer-side {
+  background-color: hsl(212, 100%, 24%) !important;
+}
+
+.esri-expand {
+  position: sticky;
+  top: 128px;
+  left: 16px;
+}
+
+.custom-snackbar {
+  margin-top: 200px !important;
+}
+
+.success-snackbar {
+  white-space: pre-wrap;
+  margin-top: 150px !important;
+}
+
+.filter-input {
+  float: left;
+  padding: 5px;
+  margin-right: 1em;
+  border-radius: 5px;
+  border: hsl(214, 58%, 47%) solid 1.5px;
+  color: hsl(214, 58%, 47%);
+  background: white;
+  width: 10em;
+}
+
+.filter-input:focus {
+  outline: hsl(214, 58%, 47%) solid 1px;
+  box-shadow: 0 0 0 5px hsl(207, 73%, 70%);
+}
+
+.warning-banner {
+  margin: 0 !important;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  max-width: 100% !important;
+  background-color: hsl(0, 0%, 0%);
+  opacity: 0.8 !important;
+  color: hsl(0, 0%, 100%);
+  font-size: 22px;
+}
+
+.message-container {
+  padding-right: 10px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.consent-close-container button {
+  color: hsl(0, 0%, 100%);
+  font-size: 22px;
+  position: absolute;
+  top: 5px;
+  right: 0px;
+}
+
+.consent-close-container {
+  text-align: right;
+}
+
+.approval-dialog-container .mat-dialog-container {
+  border-radius: 15px;
+  color: #007ac2;
+}
+
+.mat-select-panel {
+  color: #000000 !important;
+  font-size: 12pt !important;
+  font-weight: 400 !important;
+}
+
+.mat-select {
+  color: #000000 !important;
+  font-size: 12pt !important;
+  font-weight: 400 !important;
+}
+
+button {
+  cursor: pointer;
+}

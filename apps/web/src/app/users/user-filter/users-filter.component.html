@@ -1,0 +1,111 @@
+<form [formGroup]="userFilterForm" class="filter-form" (autoSearch)="userSearchFilter = $event">
+  <div class="report-filter-input-container">
+    <input
+    id="district-filter"
+    disableIfNotAuthorized
+    resource="areaFilter_District"
+    action="update"
+    class="filter-input"
+    type="text"
+    placeholder="Filter by District"
+    aria-label="Search by district"
+    formControlName="districtForm"
+    [matAutocomplete]="districtAuto"          
+    (keydown.enter)="$event.preventDefault()"
+    />
+    <mat-autocomplete #districtAuto="matAutocomplete" (optionSelected)="districtSelectEvent($event.option.id)">
+      <!-- need to add an id attribute because the text field gets set to value when user selects an option -->
+      <mat-option *ngFor="let district of districtsTemplateArray | async" [value]="district.name"
+        [id]="district.number">
+        {{ district.name }}
+      </mat-option>
+    </mat-autocomplete>
+
+    <input
+      id="maintenance-filter"
+      disableIfNotAuthorized
+      resource="areaFilter_MaintenanceOffice"
+      action="update"
+      class="filter-input"
+      type="text"
+      #maintOfcTrigger="matAutocompleteTrigger"
+      placeholder="Filter by Maint. Office"
+      aria-label="Search by maintenance office"
+      formControlName="maintOfficeForm"
+      [matAutocomplete]="maintOffcAuto"
+      (input)="watchMaintInput()"
+      [disabled]="isDistrictEmpty"          
+      (keydown.enter)="$event.preventDefault()"
+    />
+    <mat-autocomplete #maintOffcAuto="matAutocomplete" (optionSelected)="maintSelectEvent($event.option.id)">
+      <!-- need to add an id attribute because the text field gets set to value when user selects an option -->
+      <mat-option *ngFor="let office of maintOfficesTemplateArray | async" [value]="office.name" [id]="office.number">
+        {{ office.name }}
+      </mat-option>
+    </mat-autocomplete>
+
+    <div id="user-search">
+        <mat-icon id="mat-icon-search" resource="userSearch" aria-hidden="true" matPrefix>search</mat-icon>
+        <input
+          class="filter-input"
+          id="user-search-input"
+          action="update"
+          aria-label="Search by user"
+          placeholder="Search by user"
+          aria-label="Search by user"
+          formControlName="filterUserName"
+          [(ngModel)]="userSearchFilter"
+          (input)="searchUser(userSearchFilter)"          
+          (keydown.enter)="$event.preventDefault()"
+        />
+    </div>
+
+    <!-- TODO: If there's time implement auto complete
+    <mat-autocomplete #usersAutoComplete="matAutocomplete" (optionSelected)="searchUserAutoComplete($event.option.id)">
+      <mat-option *ngFor="let user of usersArray | async" [value]="user.FirstName" [id]="office.number">
+        {{ office.name }}
+      </mat-option>
+    </mat-autocomplete> -->
+    <div id="user-type-filter-container">
+      <div id="user-role-filter">
+        <button mat-icon-button color="primary" aria-label="Filter users by type" aria-haspopup="true" aria-controls="filter-user-roles" (click)="userRoleFilter.open()">
+          <mat-icon
+            id="mat-filter-type-icon"
+            matTooltip="Filter users by type"
+            matTooltipClass="tooltip"
+            matTooltipPosition="above">filter_alt
+          </mat-icon>
+        </button>
+        <mat-select
+          (selectionChange)="searchByRole($event)"
+          [(ngModel)]="selectedRoleTypes"
+          id="filter-user-roles"
+          #userRoleFilter
+          #allRoles
+          formControlName="filterByRoleType"
+          multiple>
+          <mat-optgroup *ngFor="let group of typeFilter.filterType" [label]="group.name">
+            <mat-option *ngFor="let type of group.type" [value]="type">
+              {{ type.role }}
+            </mat-option>
+          </mat-optgroup>
+          <div disabled="disabled" class="all-types-select">
+            <button mat-raised-button tabindex="0" (click)="selectAllRoles(allRoles,typeFilter.filterType, selectedRoleTypes)">Select All</button>
+            <button mat-raised-button tabindex="0" (click)="deselectAllRoles(allRoles)">Clear All</button>
+          </div>
+        </mat-select>
+      </div>
+    </div>
+
+    <div id="add-user">
+      <button *ngIf="authRoleType==='Administrator'" mat-mini-fab color="primary" aria-label="Add user" (click)="showAddUser()">
+        <mat-icon
+          aria-hidden="true"
+          matTooltip="Add new user"
+          matTooltipClass="tooltip"
+          matTooltipPosition="above">add
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+</form>

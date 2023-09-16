@@ -1,0 +1,15 @@
+<div mat-dialog-title>Send sign approval request</div>
+<div mat-dialog-content class="request-content">
+  <form [formGroup]="requestForm" class="request-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Description (optional)</mat-label>
+      <textarea matInput #description placeholder="" cdkTextareaAutosize cdkAutosizeMinRows="4" formControlName="description"></textarea>
+      <mat-hint align="end">{{description.value.length}} / 256</mat-hint>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button aria-label="send" mat-raised-button color="primary" (click)="submitRequest()"
+    [mat-dialog-close]="'Request Sent'">Send</button>
+  <button aria-label="Cancel" mat-raised-button color="warn" mat-dialog-close (click)="onNoClick()">Cancel</button>
+</div>
